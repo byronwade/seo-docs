@@ -269,11 +269,6 @@ export function Layout() {
               { title: "Docs", href: "/docs" },
               { title: "Introduction to SEO", href: "/docs" }
             ]} />
-            <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap">Docs</div>
-              <ChevronRight className="h-4 w-4" />
-              <div className="font-medium text-foreground">Introduction to SEO</div>
-            </div>
             <div className="space-y-2">
               <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Introduction to SEO</h1>
               <p className="text-xl text-muted-foreground">

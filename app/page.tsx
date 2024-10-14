@@ -1,16 +1,27 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { Layout } from '@/components/layout';
+import dynamic from 'next/dynamic';
 import { JsonLd } from 'react-schemaorg';
-import { WebSite, BreadcrumbList, FAQPage } from 'schema-dts';
+import {
+  WebSite,
+  BreadcrumbList,
+  FAQPage,
+  Article,
+  SiteNavigationElement,
+} from 'schema-dts';
+
+const Layout = dynamic(() => import('@/components/layout').then((mod) => mod.Layout), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'SEO Docs - Learn Search Engine Optimization',
-  description: 'Comprehensive guide to SEO best practices, techniques, and strategies to improve your website\'s search engine rankings.',
-  keywords: 'SEO, search engine optimization, digital marketing, website ranking',
+  description:
+    "Comprehensive guide to SEO best practices, techniques, and strategies to improve your website's search engine rankings.",
+  keywords:
+    'SEO, search engine optimization, digital marketing, website ranking',
   openGraph: {
     title: 'SEO Docs - Master Search Engine Optimization',
-    description: 'Learn SEO techniques to boost your website\'s visibility and traffic.',
+    description:
+      "Learn SEO techniques to boost your website's visibility and traffic.",
     url: 'https://your-domain.com',
     siteName: 'SEO Docs',
     images: [
@@ -22,12 +33,13 @@ export const metadata: Metadata = {
       },
     ],
     locale: 'en_US',
-    type: 'website',
+    type: 'article',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'SEO Docs - Expert SEO Guidance',
-    description: 'Elevate your website\'s performance with our comprehensive SEO resources.',
+    description:
+      "Elevate your website's performance with our comprehensive SEO resources.",
     images: ['https://your-domain.com/twitter-image.jpg'],
     creator: '@yourtwitterhandle',
   },
@@ -42,6 +54,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  alternates: {
+    canonical: 'https://your-domain.com',
+  },
 };
 
 function HomePage() {
@@ -49,43 +64,85 @@ function HomePage() {
     <>
       <JsonLd<WebSite>
         item={{
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: "SEO Docs",
-          url: "https://your-domain.com",
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'SEO Docs',
+          url: 'https://your-domain.com',
           potentialAction: {
-            "@type": "SearchAction",
+            '@type': 'SearchAction',
             target: {
-              "@type": "EntryPoint",
-              urlTemplate: "https://your-domain.com/search?q={search_term_string}"
+              '@type': 'EntryPoint',
+              urlTemplate:
+                'https://your-domain.com/search?q={search_term_string}',
             },
-          }
+          },
         }}
       />
       <JsonLd<BreadcrumbList>
         item={{
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [{
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: "https://your-domain.com"
-          }]
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'Home',
+              item: 'https://your-domain.com',
+            },
+          ],
         }}
       />
       <JsonLd<FAQPage>
         item={{
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [{
-            "@type": "Question",
-            name: "What is SEO?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "SEO stands for Search Engine Optimization. It's the practice of optimizing websites to make them reach a high position in Google's (or another search engine's) search results."
-            }
-          }]
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: [
+            {
+              '@type': 'Question',
+              name: 'What is SEO?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'SEO stands for Search Engine Optimization. It is the practice of optimizing websites to achieve higher rankings in search engine results.',
+              },
+            },
+            // Add more FAQs as needed
+          ],
+        }}
+      />
+      <JsonLd<Article>
+        item={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: 'SEO Docs - Learn Search Engine Optimization',
+          author: {
+            '@type': 'Person',
+            name: 'Your Name',
+          },
+          datePublished: '2023-10-13',
+          dateModified: '2023-10-14',
+          image: 'https://your-domain.com/og-image.jpg',
+          mainEntityOfPage: 'https://your-domain.com',
+          publisher: {
+            '@type': 'Organization',
+            name: 'SEO Docs',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://your-domain.com/logo.png',
+            },
+          },
+        }}
+      />
+      <JsonLd<SiteNavigationElement>
+        item={{
+          '@context': 'https://schema.org',
+          '@type': 'SiteNavigationElement',
+          name: ['Home', 'About', 'Contact', 'Blog'],
+          url: [
+            'https://your-domain.com',
+            'https://your-domain.com/about',
+            'https://your-domain.com/contact',
+            'https://your-domain.com/blog',
+          ],
         }}
       />
       <Layout />
