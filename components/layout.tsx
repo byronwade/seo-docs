@@ -78,7 +78,7 @@ const faqItems = [
   },
 ]
 
-function Breadcrumb({ items }) {
+function Breadcrumb({ items }: { items: Array<{ title: string; href: string }> }) {
   return (
     <nav aria-label="Breadcrumb" className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
       {items.map((item, index) => (
@@ -277,14 +277,14 @@ export function Layout() {
             <div className="space-y-2">
               <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Introduction to SEO</h1>
               <p className="text-xl text-muted-foreground">
-                Learn the fundamentals of Search Engine Optimization and how to improve your website's visibility.
+                Learn the fundamentals of Search Engine Optimization and how to improve your website&apos;s visibility.
               </p>
             </div>
             <div className="mt-8 space-y-8">
               <section>
                 <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0" id="what-is-seo">What is SEO?</h2>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
-                  Search Engine Optimization (SEO) is the practice of improving a website's visibility and ranking in search engine results pages (SERPs). By optimizing various aspects of your website, you can increase organic traffic and attract more potential customers or readers to your content.
+                  Search Engine Optimization (SEO) is the practice of improving a website&apos;s visibility and ranking in search engine results pages (SERPs). By optimizing various aspects of your website, you can increase organic traffic and attract more potential customers or readers to your content.
                 </p>
               </section>
               <section>
@@ -308,10 +308,10 @@ export function Layout() {
                 <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
                   <li>On-Page SEO: Optimizing individual web pages to rank higher and earn more relevant traffic.</li>
                   <li>Technical SEO: Improving the technical aspects of a website to increase the ranking of its pages in search engines.</li>
-                  <li>Off-Page SEO: Improving the perception of a site's popularity, relevance, trustworthiness, and authority by other reputable places on the Internet linking to or promoting it.</li>
+                  <li>Off-Page SEO: Improving the perception of a site&apos;s popularity, relevance, trustworthiness, and authority by other reputable places on the Internet linking to or promoting it.</li>
                 </ol>
                 <p className="leading-7 [&:not(:first-child)]:mt-6">
-                  We'll explore each of these components in detail in the following sections.
+                  We&apos;ll explore each of these components in detail in the following sections.
                 </p>
               </section>
               <section>
@@ -321,10 +321,10 @@ export function Layout() {
                 </p>
                 <ol className="my-6 ml-6 list-decimal [&>li]:mt-2">
                   <li>Conduct keyword research to understand what your target audience is searching for.</li>
-                  <li>Optimize your website's content and structure for both users and search engines.</li>
+                  <li>Optimize your website&apos;s content and structure for both users and search engines.</li>
                   <li>Ensure your website is technically sound, with fast loading times and  mobile-friendliness.</li>
                   <li>Build high-quality backlinks from reputable websites in your industry.</li>
-                  <li>Regularly monitor your website's performance and adjust your SEO strategy as needed.</li>
+                  <li>Regularly monitor your website&apos;s performance and adjust your SEO strategy as needed.</li>
                 </ol>
               </section>
               <section>
