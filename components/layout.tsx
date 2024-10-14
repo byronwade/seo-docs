@@ -97,7 +97,7 @@ function Breadcrumb({ items }) {
   )
 }
 
-export function Layout({ children }) {
+export function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [theme, setTheme] = useState("light")
   const [isSearchOpen, setIsSearchOpen] = useState(false)
