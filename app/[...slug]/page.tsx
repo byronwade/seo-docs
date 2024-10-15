@@ -1,118 +1,189 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { Metadata } from 'next';
 import { Layout } from "@/components/layout";
-import { MDXComponents } from '@/components/MDXComponents';
 import LoadingSkeleton from "@/components/LoadingSkeleton";
-import RelatedContent from "@/components/related-content";
 import { BlogEmailSignup } from "@/components/blog-email-signup";
 import { Suspense } from "react";
+import { PrismaClient } from '@prisma/client';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import MDXComponents from '@/components/MDXComponents';
+
+const prisma = new PrismaClient();
 
 // Function to generate metadata for SEO purposes
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
-  const filePath = path.join(process.cwd(), "content", ...params.slug, "page.mdx");
+  const content = await getContentFromSlug(params.slug);
 
-  try {
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    const { data } = matter(fileContent);
-
-    return {
-		title: data?.title || "SEO Docs",
-		description: data?.description || "SEO Documentation and guides",
-		openGraph: {
-			title: data?.title || "SEO Docs",
-			description: data?.description || "SEO Documentation and guides",
-			url: data?.canonicalUrl || `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
-			type: "article",
-			images: [
-				{
-					url: data?.image || "/images/seo-introduction-image.jpg",
-					width: 1200,
-					height: 630,
-					alt: data?.title,
-				},
-			],
-		},
-		twitter: {
-			card: "summary_large_image",
-			site: "@yourwebsite",
-			title: data?.title || "SEO Docs",
-			description: data?.description || "SEO Documentation and guides",
-			images: [
-				{
-					url: data?.image || "/images/seo-introduction-image.jpg",
-					alt: data?.title || "SEO Docs",
-				},
-			],
-		},
-		robots: data?.robots || "index, follow",
-		alternates: {
-			canonical: data?.canonicalUrl || `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
-		},
-	};
-  } catch (error) {
-    console.error("Error generating metadata:", error);
+  if (!content) {
     return {
       title: 'Page Not Found',
       description: 'The requested page could not be found.',
     };
   }
+
+  return {
+    title: content.seoTitle || content.title,
+    description: content.seoDescription || content.description,
+    openGraph: {
+      title: content.seoTitle || content.title,
+      description: content.seoDescription || content.description,
+      url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+      type: "article",
+      images: [
+        {
+          url: content.seoImage || content.image || "/images/default-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: content.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@yourwebsite",
+      title: content.seoTitle || content.title,
+      description: content.seoDescription || content.description,
+      images: [
+        {
+          url: content.seoImage || content.image || "/images/default-image.jpg",
+          alt: content.title,
+        },
+      ],
+    },
+    robots: "index, follow",
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+    },
+  };
+}
+
+async function getContentFromSlug(slug: string[]) {
+  const fullSlug = slug.join('/');
+  console.log('Searching for slug:', fullSlug);
+
+  // First, try to find a ContentType that matches the first part of the slug
+  const contentType = await prisma.contentType.findFirst({
+    where: { slug: slug[0] },
+  });
+
+  if (!contentType) {
+    console.log('Content type not found');
+    return null;
+  }
+
+  // Now, search for a Page or Post with the remaining slug
+  const remainingSlug = slug.slice(1).join('/');
+  
+  const page = await prisma.page.findFirst({
+    where: {
+      contentTypeId: contentType.id,
+      slug: remainingSlug,
+    },
+  });
+
+  if (page) {
+    console.log('Found page:', page);
+    return { ...page, type: 'page' };
+  }
+
+  const post = await prisma.post.findFirst({
+    where: {
+      contentTypeId: contentType.id,
+      slug: remainingSlug,
+    },
+  });
+
+  if (post) {
+    console.log('Found post:', post);
+    return { ...post, type: 'post' };
+  }
+
+  console.log('Content not found');
+  return null;
 }
 
 // Full Next.js Page component with metadata, structured data, Error Boundary, and loading skeleton
 export default async function Page({ params }: { params: { slug: string[] } }) {
-	const filePath = path.join(process.cwd(), "content", ...params.slug, "page.mdx");
-	const fileContent = await fs.readFile(filePath, "utf-8");
-	const { data, content } = matter(fileContent);
+  const content = await getContentFromSlug(params.slug);
 
-	const jsonLd = data
-		? {
-				"@context": "https://schema.org",
-				"@type": "Article",
-				headline: data.title,
-				description: data.description,
-				author: {
-					"@type": "Person",
-					name: data.author || "John Doe",
-				},
-				datePublished: data.date || "2024-10-13",
-				image: data.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/seo-introduction-image.jpg`,
-				url: data.canonicalUrl || `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
-				publisher: {
-					"@type": "Organization",
-					name: "Your Website",
-					logo: {
-						"@type": "ImageObject",
-						url: `${process.env.NEXT_PUBLIC_DOMAIN}/images/logo.png`,
-					},
-				},
-		  }
-		: null;
+  if (!content) {
+    return (
+      <Layout>
+        <h1>Content Not Found</h1>
+        <p>The requested page could not be found.</p>
+      </Layout>
+    );
+  }
 
-	return (
-		<Layout>
-			{jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
-			<Suspense fallback={<LoadingSkeleton />}>
-				<Article filePath={filePath} params={params} data={data} content={content} />
-			</Suspense>
-		</Layout>
-	);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: content.title,
+    description: content.description,
+    author: {
+      "@type": "Person",
+      name: content.author,
+    },
+    datePublished: content.date.toISOString(),
+    image: content.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/default-image.jpg`,
+    url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+    publisher: {
+      "@type": "Organization",
+      name: "Your Website",
+      logo: {
+        "@type": "ImageObject",
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/images/logo.png`,
+      },
+    },
+  };
+
+  return (
+    <Layout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Article content={content} />
+      </Suspense>
+    </Layout>
+  );
 }
 
-// Server Component for rendering the article content
-async function Article({ data, content }: { filePath: string; params: { slug: string[] }; data: unknown; content: string }) {
-	try {
-		return (
-			<article className="prose md:prose-lg lg:prose-xl mt-8 space-y-8">
-				<MDXRemote source={content} components={MDXComponents} />
-				<BlogEmailSignup />
-				<RelatedContent currentKeywords={(data as { keywords?: string[] }).keywords ?? []} />
-			</article>
-		);
-	} catch (error) {
-		console.error("Error loading MDX:", error);
-		throw new Error("Failed to load article content");
-	}
+function Article({ content }: { content: any }) {
+  return (
+    <article className="prose md:prose-lg mt-8 space-y-8">
+      <MDXRemote source={content.content} components={MDXComponents} />
+      <BlogEmailSignup />
+    </article>
+  );
+}
+
+export async function generateStaticParams() {
+  const contentTypes = await prisma.contentType.findMany();
+  
+  const params = [];
+
+  for (const contentType of contentTypes) {
+    const pages = await prisma.page.findMany({
+      where: { contentTypeId: contentType.id },
+      select: { slug: true },
+    });
+
+    const posts = await prisma.post.findMany({
+      where: { contentTypeId: contentType.id },
+      select: { slug: true },
+    });
+
+    pages.forEach(page => {
+      if (page.slug) {
+        params.push({ slug: [contentType.slug, page.slug] });
+      }
+    });
+
+    posts.forEach(post => {
+      if (post.slug) {
+        params.push({ slug: [contentType.slug, post.slug] });
+      }
+    });
+  }
+
+  console.log('Generated params:', params);
+  return params;
 }

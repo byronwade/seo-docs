@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+
+model ContentType {
+  id    BigInt @id @default(autoincrement()) // Auto-increment strategy for bigint
+  name  String @unique
+  slug  String @unique
+  pages Page[]
+  posts Post[]
+}
+
+model Page {
+  id              BigInt      @id @default(autoincrement()) // Auto-increment strategy for bigint
+  title           String
+  content         String
+  slug            String?     @unique
+  description     String?
+  author          String
+  date            DateTime    @default(now())
+  image           String?
+  keywords        String[]    @default([])
+  seoTitle        String?
+  seoDescription  String?
+  seoImage        String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  contentTypeId   BigInt
+  contentType     ContentType @relation(fields: [contentTypeId], references: [id])
+}
+
+model Post {
+  id              BigInt      @id @default(autoincrement()) // Auto-increment strategy for bigint
+  title           String
+  content         String
+  slug            String?     @unique
+  description     String?
+  author          String
+  date            DateTime    @default(now())
+  image           String?
+  keywords        String[]    @default([])
+  seoTitle        String?
+  seoDescription  String?
+  seoImage        String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  contentTypeId   BigInt
+  contentType     ContentType @relation(fields: [contentTypeId], references: [id])
+}

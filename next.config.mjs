@@ -9,15 +9,15 @@ const nextConfig = {
 }
 
 const withMDX = createMDX({
-    experimental: {
-        mdxRs: true,
-      },
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
-  },
-})
+	experimental: {
+		mdxRs: true,
+	},
+	extension: /\.mdx?$/,
+	options: {
+		remarkPlugins: [],
+		rehypePlugins: [],
+	},
+});
 
 // Merge MDX config with Next.js config
 export default withMDX(nextConfig)
