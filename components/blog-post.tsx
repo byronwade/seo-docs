@@ -1,6 +1,5 @@
 'use client'
 
-import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Twitter, Linkedin, Clock, User, ArrowRight, ChevronRight } from 'lucide-react'
@@ -72,45 +71,8 @@ export function BlogPostComponent() {
     ]
   }
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.title,
-    "image": post.featuredImage,
-    "datePublished": post.date,
-    "dateModified": post.modifiedDate,
-    "author": {
-      "@type": "Person",
-      "name": post.author.name
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Your Blog Name",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://yourblog.com/logo.png"
-      }
-    },
-    "description": post.excerpt
-  }
-
   return (
     <>
-      <Head>
-        <title>{post.title} | Your Blog Name</title>
-        <meta name="description" content={post.excerpt} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href={`https://yourblog.com/posts/${post.slug}`} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.featuredImage} />
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
-        <meta name="twitter:image" content={post.featuredImage} />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      </Head>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-12">
