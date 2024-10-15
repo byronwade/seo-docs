@@ -11,18 +11,19 @@ import { Input } from "@/components/ui/input"
 export function BlogPostComponent() {
   // This would typically come from your CMS or API
   const post = {
-    title: "The Future of Artificial Intelligence: Trends and Implications",
-    excerpt: "Explore the latest trends in AI and their potential impact on various industries.",
-    featuredImage: "/placeholder.svg?height=1080&width=1920",
-    author: {
-      name: "Dr. Jane Smith",
-      avatar: "/placeholder.svg?height=80&width=80",
-      bio: "AI researcher and tech enthusiast"
-    },
-    date: "2023-05-15",
-    modifiedDate: "2023-05-20",
-    readingTime: "8 min read",
-    content: `
+		title: "The Future of Artificial Intelligence: Trends and Implications",
+		slug: "future-of-ai-trends-implications", // Add the slug property
+		excerpt: "Explore the latest trends in AI and their potential impact on various industries.",
+		featuredImage: "/placeholder.svg?height=1080&width=1920",
+		author: {
+			name: "Dr. Jane Smith",
+			avatar: "/placeholder.svg?height=80&width=80",
+			bio: "AI researcher and tech enthusiast",
+		},
+		date: "2023-05-15",
+		modifiedDate: "2023-05-20",
+		readingTime: "8 min read",
+		content: `
       <h2>Introduction</h2>
       <p>Artificial Intelligence (AI) is rapidly evolving, reshaping industries and our daily lives. This post explores current trends and their implications.</p>
       
@@ -38,38 +39,38 @@ export function BlogPostComponent() {
       <h2>Conclusion</h2>
       <p>The future of AI is bright, with immense potential to solve complex problems and improve our quality of life. However, it's essential to navigate this future thoughtfully and ethically.</p>
     `,
-    tags: ["Artificial Intelligence", "Technology", "Future Trends"],
-    relatedPosts: [
-      { 
-        title: "Machine Learning Basics Explained", 
-        slug: "machine-learning-basics",
-        excerpt: "A comprehensive guide to understanding the fundamentals of machine learning.",
-        image: "/placeholder.svg?height=200&width=300",
-        date: "2023-04-20",
-        readingTime: "10 min read"
-      },
-      { 
-        title: "The Role of AI in Climate Change Mitigation", 
-        slug: "ai-climate-change",
-        excerpt: "Exploring how AI technologies are being leveraged to combat climate change.",
-        image: "/placeholder.svg?height=200&width=300",
-        date: "2023-05-05",
-        readingTime: "12 min read"
-      },
-      { 
-        title: "Ethical Considerations in AI Development", 
-        slug: "ethical-ai-development",
-        excerpt: "Discussing the ethical challenges and considerations in AI development and deployment.",
-        image: "/placeholder.svg?height=200&width=300",
-        date: "2023-05-10",
-        readingTime: "15 min read"
-      }
-    ],
-    comments: [
-      { user: "TechEnthusiast", content: "Great article! I'm particularly interested in the ethical implications of AI.", date: "2023-05-16" },
-      { user: "AIResearcher", content: "The advancements in NLP are truly remarkable. I'd love to see more on this topic.", date: "2023-05-17" }
-    ]
-  }
+		tags: ["Artificial Intelligence", "Technology", "Future Trends"],
+		relatedPosts: [
+			{
+				title: "Machine Learning Basics Explained",
+				slug: "machine-learning-basics",
+				excerpt: "A comprehensive guide to understanding the fundamentals of machine learning.",
+				image: "/placeholder.svg?height=200&width=300",
+				date: "2023-04-20",
+				readingTime: "10 min read",
+			},
+			{
+				title: "The Role of AI in Climate Change Mitigation",
+				slug: "ai-climate-change",
+				excerpt: "Exploring how AI technologies are being leveraged to combat climate change.",
+				image: "/placeholder.svg?height=200&width=300",
+				date: "2023-05-05",
+				readingTime: "12 min read",
+			},
+			{
+				title: "Ethical Considerations in AI Development",
+				slug: "ethical-ai-development",
+				excerpt: "Discussing the ethical challenges and considerations in AI development and deployment.",
+				image: "/placeholder.svg?height=200&width=300",
+				date: "2023-05-10",
+				readingTime: "15 min read",
+			},
+		],
+		comments: [
+			{ user: "TechEnthusiast", content: "Great article! I'm particularly interested in the ethical implications of AI.", date: "2023-05-16" },
+			{ user: "AIResearcher", content: "The advancements in NLP are truly remarkable. I'd love to see more on this topic.", date: "2023-05-17" },
+		],
+  };
 
   return (
     <>
