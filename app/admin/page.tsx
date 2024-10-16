@@ -1,14 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { MDXEditorMethods } from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
+import { createContentType, updateContentType, deleteContentType, createPage, updatePage, deletePage, createPost, updatePost, deletePost } from '../actions'
+import Link from 'next/link'
+import dynamic from 'next/dynamic'
+import { serialize } from 'next-mdx-remote/serialize'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+
+// Dynamically import the InitializedMDXEditor component
+const InitializedMDXEditor = dynamic(
+  () => import('@/components/InitializedMDXEditor'),
+  { ssr: false }
+)
 
 export default function ContentManagement() {
   const [activeTab, setActiveTab] = useState('content-types')
@@ -18,6 +30,8 @@ export default function ContentManagement() {
   const [pages, setPages] = useState([])
   const [posts, setPosts] = useState([])
   const { toast } = useToast()
+  const editorRef = useRef<MDXEditorMethods>(null)
+  const [editingType, setEditingType] = useState<'pages' | 'posts' | null>(null)
 
   useEffect(() => {
     fetchContentTypes()
@@ -44,44 +58,100 @@ export default function ContentManagement() {
   }
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (type) => {
-    const url = `/api/${type}`
-    const method = editingId ? 'PUT' : 'POST'
-    const body = JSON.stringify(editingId ? { ...formData, id: editingId } : formData)
+  const handleEditorChange = (content: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      content: content
+    }));
+  };
 
+  const handleSubmit = async (type: 'pages' | 'posts') => {
     try {
-      const response = await fetch(url, { method, body, headers: { 'Content-Type': 'application/json' } })
-      if (!response.ok) throw new Error('Failed to save')
-      
-      toast({ title: `${editingId ? 'Updated' : 'Created'} successfully` })
-      setFormData({})
-      setEditingId(null)
-      
-      if (type === 'content-types') fetchContentTypes()
-      else if (type === 'pages') fetchPages()
-      else if (type === 'posts') fetchPosts()
-    } catch (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' })
-    }
-  }
+      const serializedContent = await serialize(formData.content || '', {
+        mdxOptions: {
+          jsx: true,
+          remarkPlugins: [],
+          rehypePlugins: [],
+        },
+        scope: {
+          Accordion,
+          AccordionContent,
+          AccordionItem,
+          AccordionTrigger,
+        },
+      });
 
-  const handleEdit = (type, id) => {
-    setEditingId(id)
-    const item = type === 'content-types' 
-      ? contentTypes.find(ct => ct.id === id)
-      : type === 'pages'
-      ? pages.find(p => p.id === id)
-      : posts.find(p => p.id === id)
-    setFormData(item)
-  }
+      const data = {
+        ...formData,
+        content: JSON.stringify(serializedContent)
+      };
+
+      let result;
+      if (type === 'pages') {
+        result = editingId
+          ? await updatePage({ ...data, id: editingId })
+          : await createPage(data);
+      } else if (type === 'posts') {
+        result = editingId
+          ? await updatePost({ ...data, id: editingId })
+          : await createPost(data);
+      }
+
+      if (result.error) {
+        toast({
+          title: "Error",
+          description: result.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: `${type} ${editingId ? 'updated' : 'created'} successfully`,
+        });
+        setFormData({});
+        setEditingId(null);
+        if (type === 'pages') fetchPages();
+        else if (type === 'posts') fetchPosts();
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEdit = async (type: 'pages' | 'posts', id: number) => {
+    const item = type === 'pages' ? pages.find(p => p.id === id) : posts.find(p => p.id === id);
+    if (item) {
+      setFormData({
+        ...item,
+        contentTypeId: item.contentTypeId?.toString()
+      });
+      setEditingId(id);
+      setEditingType(type);
+      
+      if (editorRef.current) {
+        editorRef.current.setMarkdown(item.content || '');
+      }
+    }
+  };
 
   const handleDelete = async (type, id) => {
     try {
-      const response = await fetch(`/api/${type}/${id}`, { method: 'DELETE' })
-      if (!response.ok) throw new Error('Failed to delete')
+      if (type === 'content-types') {
+        await deleteContentType(BigInt(id))
+      } else if (type === 'pages') {
+        await deletePage(BigInt(id))
+      } else if (type === 'posts') {
+        await deletePost(BigInt(id))
+      }
       
       toast({ title: 'Deleted successfully' })
       
@@ -91,6 +161,11 @@ export default function ContentManagement() {
     } catch (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' })
     }
+  }
+
+  const getItemLink = (item, type) => {
+    const contentType = contentTypes.find(ct => ct.id === item.contentTypeId)
+    return `${process.env.NEXT_PUBLIC_DOMAIN}/${contentType?.slug}/${item.slug}`
   }
 
   return (
@@ -150,7 +225,13 @@ export default function ContentManagement() {
             </div>
             <div>
               <Label htmlFor="content">Content</Label>
-              <Textarea id="content" name="content" value={formData.content || ''} onChange={handleInputChange} required />
+              <InitializedMDXEditor
+                key={formData.content}
+                editorRef={editorRef}
+                markdown={formData.content || ''}
+                onChange={handleEditorChange}
+                contentEditableClassName="prose max-w-full"
+              />
             </div>
             <div>
               <Label htmlFor="contentTypeId">Content Type</Label>
@@ -184,7 +265,10 @@ export default function ContentManagement() {
                   <TableCell>{contentTypes.find(ct => ct.id === page.contentTypeId)?.name}</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm" onClick={() => handleEdit('pages', page.id)} className="mr-2">Edit</Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete('pages', page.id)}>Delete</Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete('pages', page.id)} className="mr-2">Delete</Button>
+                    <Link href={getItemLink(page, 'pages')} target="_blank" passHref>
+                      <Button variant="link" size="sm">Open</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -204,7 +288,13 @@ export default function ContentManagement() {
             </div>
             <div>
               <Label htmlFor="content">Content</Label>
-              <Textarea id="content" name="content" value={formData.content || ''} onChange={handleInputChange} required />
+              <InitializedMDXEditor
+                key={formData.content}
+                editorRef={editorRef}
+                markdown={formData.content || ''}
+                onChange={handleEditorChange}
+                contentEditableClassName="prose max-w-full"
+              />
             </div>
             <div>
               <Label htmlFor="contentTypeId">Content Type</Label>
@@ -238,7 +328,10 @@ export default function ContentManagement() {
                   <TableCell>{contentTypes.find(ct => ct.id === post.contentTypeId)?.name}</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm" onClick={() => handleEdit('posts', post.id)} className="mr-2">Edit</Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete('posts', post.id)}>Delete</Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete('posts', post.id)} className="mr-2">Delete</Button>
+                    <Link href={getItemLink(post, 'posts')} target="_blank" passHref>
+                      <Button variant="link" size="sm">Open</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

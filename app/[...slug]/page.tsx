@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
   }
 
   return {
-    title: content.seoTitle || content.title,
-    description: content.seoDescription || content.description,
+    title: content.seoTitle ?? content.title ?? undefined,
+    description: content.seoDescription ?? content.description ?? undefined,
     openGraph: {
-      title: content.seoTitle || content.title,
-      description: content.seoDescription || content.description,
+      title: content.seoTitle ?? content.title ?? undefined,
+      description: content.seoDescription ?? content.description ?? undefined,
       url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
       type: "article",
       images: [
@@ -40,8 +40,8 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
     twitter: {
       card: "summary_large_image",
       site: "@yourwebsite",
-      title: content.seoTitle || content.title,
-      description: content.seoDescription || content.description,
+      title: content.seoTitle ?? content.title ?? undefined,
+      description: content.seoDescription ?? content.description ?? undefined,
       images: [
         {
           url: content.seoImage || content.image || "/images/default-image.jpg",
@@ -146,10 +146,10 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   );
 }
 
-function Article({ content }: { content: any }) {
+function Article({ content }: { content: unknown }) {
   return (
-    <article className="prose md:prose-lg mt-8 space-y-8">
-      <MDXRemote source={content.content} components={MDXComponents} />
+    <article className="prose dark:prose-invert mt-8 space-y-8">
+      <MDXRemote source={(content as { content: string }).content} components={MDXComponents} />
       <BlogEmailSignup />
     </article>
   );
@@ -158,7 +158,7 @@ function Article({ content }: { content: any }) {
 export async function generateStaticParams() {
   const contentTypes = await prisma.contentType.findMany();
   
-  const params = [];
+  const params: { slug: string[] }[] = [];
 
   for (const contentType of contentTypes) {
     const pages = await prisma.page.findMany({
