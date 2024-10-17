@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { PrismaClient } from '@prisma/client';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import MDXComponents from '@/components/MDXComponents';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 const prisma = new PrismaClient();
 
@@ -186,4 +187,17 @@ export async function generateStaticParams() {
 
   console.log('Generated params:', params);
   return params;
+}
+
+const components = {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+}
+
+export default function Page({ content }) {
+  return (
+    <MDXRemote source={content} components={components} />
+  )
 }
