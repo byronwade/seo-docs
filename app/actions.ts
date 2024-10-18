@@ -28,30 +28,36 @@ export async function deleteContentType(id: bigint) {
 }
 
 // Page actions
-export async function createPage(data: { title: string; content: string; slug?: string; description?: string; author: string; image?: string; keywords: string[]; seoTitle?: string; seoDescription?: string; seoImage?: string; contentTypeId: bigint }) {
-	const page = await prisma.page.create({ data });
-	revalidatePath("/admin");
-	return page;
+export async function createPage(data: any) {
+	try {
+		const result = await prisma.page.create({
+			data: {
+				title: data.title,
+				slug: data.slug,
+				content: data.content,
+				author: data.author,
+				contentType: {
+					connect: { id: parseInt(data.contentTypeId) },
+				},
+			},
+		});
+		return { success: true, data: result };
+	} catch (error) {
+		console.error("Error creating page:", error);
+		return { error: "Failed to create page" };
+	}
 }
 
-export async function updatePage(
-	id: bigint,
-	data: {
-		title?: string;
-		content?: string;
-		slug?: string;
-		description?: string;
-		author?: string;
-		image?: string | null;
-		keywords?: string[];
-		seoTitle?: string | null;
-		seoDescription?: string | null;
-		seoImage?: string | null;
-		contentTypeId?: string | bigint;
-		date?: Date | string;
+export async function updatePage(data: any) {
+	if (!data || typeof data !== "object") {
+		throw new Error("Invalid data provided to updatePage");
 	}
-) {
-	const { contentTypeId, date, ...restData } = data;
+
+	const { id, contentTypeId, date, ...restData } = data;
+
+	if (!id) {
+		throw new Error("Missing id for updatePage");
+	}
 
 	const updateData: any = {
 		...restData,
@@ -60,10 +66,11 @@ export async function updatePage(
 	};
 
 	const page = await prisma.page.update({
-		where: { id },
+		where: { id: BigInt(id) },
 		data: updateData,
 		include: { contentType: true },
 	});
+
 	revalidatePath("/admin");
 	return page;
 }

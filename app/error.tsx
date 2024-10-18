@@ -1,5 +1,5 @@
 'use client';
-import { Layout } from '@/components/layout';
+import { Layout } from "@/app/components/layout";
 
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
