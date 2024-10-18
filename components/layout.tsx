@@ -9,12 +9,12 @@ import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/app/components/ui/button";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/app/components/ui/collapsible";
-import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet";
-import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/app/components/ui/command";
-import { Breadcrumb } from "@/app/components/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Breadcrumb } from "@/components/breadcrumb";
 
 const mainNav = [
 	{ title: "Documentation", href: "/docs", icon: Menu },

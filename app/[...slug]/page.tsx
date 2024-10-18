@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import { Layout } from "@/app/components/layout";
-import LoadingSkeleton from "@/app/components/LoadingSkeleton";
-import { BlogEmailSignup } from "@/app/components/blog-email-signup";
+import { Layout } from "@/components/layout";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
+import { BlogEmailSignup } from "@/components/blog-email-signup";
 import { Suspense } from "react";
 import { PrismaClient } from "@prisma/client";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import MDXComponents from "@/app/components/MDXComponents";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/app/components/ui/accordion";
+import MDXComponents from "@/components/MDXComponents";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 const prisma = new PrismaClient();
 

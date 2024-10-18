@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Twitter, Linkedin, Clock, User, ArrowRight, ChevronRight } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/app/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/app/components/ui/avatar";
-import { Input } from "@/app/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
 
 export function BlogPostComponent() {
 	// This would typically come from your CMS or API
