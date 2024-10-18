@@ -15,6 +15,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Breadcrumb } from "@/components/breadcrumb";
+import { ScrollSpy } from "@/components/scroll-spy";
 
 const mainNav = [
 	{ title: "Documentation", href: "/docs", icon: Menu },
@@ -247,30 +248,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 						{!isHomePage && <Breadcrumb />}
 						{children}
 					</div>
-					{headings.length > 0 && (
-						<div className="hidden text-sm xl:block">
-							<div className="sticky top-16 -mt-10 max-h-[calc(100vh-3.5rem)] overflow-hidden pt-10">
-								<ScrollArea className="pb-10">
-									<div className="space-y-2">
-										<p className="font-medium">On This Page</p>
-										<ul className="m-0 list-none">
-											{headings.map((heading, index) => (
-												<li
-													key={heading.id}
-													className={cn("mt-0 pt-2", {
-														"text-foreground": index === currentActiveIndex,
-														"text-muted-foreground": index !== currentActiveIndex,
-													})}
-												>
-													<a href={`#${heading.id}`}>{heading.text}</a>
-												</li>
-											))}
-										</ul>
-									</div>
-								</ScrollArea>
-							</div>
+					<div className="hidden text-sm xl:block">
+						<div className="sticky top-16 -mt-10 max-h-[calc(100vh-3.5rem)] overflow-hidden pt-10">
+							<ScrollArea className="pb-10">
+								<div className="space-y-2">
+									<p className="font-medium">On This Page</p>
+									<ScrollSpy />
+								</div>
+							</ScrollArea>
 						</div>
-					)}
+					</div>
 				</main>
 			</div>
 			<footer className="border-t mt-auto">
