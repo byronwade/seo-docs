@@ -7,6 +7,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import MDXComponents from "@/components/MDXComponents";
 import SidebarPage from "@/components/components-sidebar";
 import { ContentNotFound } from "@/components/content-not-found";
+import { SourcesComponent } from "@/components/sources-component";
+import { AISummary } from "@/components/ai-summary";
+
 const prisma = new PrismaClient();
 
 // Function to generate metadata for SEO purposes
@@ -57,7 +60,6 @@ async function getContentFromSlug(slug: string[]) {
 	const fullSlug = slug.join("/");
 	console.log("Searching for slug:", fullSlug);
 
-	// First, try to find a ContentType that matches the first part of the slug
 	const contentType = await prisma.contentType.findFirst({
 		where: { slug: slug[0] },
 	});
@@ -67,7 +69,6 @@ async function getContentFromSlug(slug: string[]) {
 		return null;
 	}
 
-	// Now, search for a Page or Post with the remaining slug
 	const remainingSlug = slug.slice(1).join("/");
 
 	const page = await prisma.page.findFirst({
@@ -78,8 +79,20 @@ async function getContentFromSlug(slug: string[]) {
 	});
 
 	if (page) {
-		console.log("Found page:", page);
-		return { ...page, type: "page" };
+		console.log("Raw page data:", page);
+		console.log("Raw page sources:", page.sources);
+
+		// Remove the JSON.parse line
+		// const parsedSources = page.sources ? JSON.parse(page.sources as string) : null;
+
+		// Instead, use the sources directly
+		console.log("Page sources:", page.sources);
+
+		return {
+			...page,
+			type: "page",
+			sources: page.sources, // Use the sources directly
+		};
 	}
 
 	const post = await prisma.post.findFirst({
@@ -90,11 +103,16 @@ async function getContentFromSlug(slug: string[]) {
 	});
 
 	if (post) {
-		console.log("Found post:", post);
-		return { ...post, type: "post" };
+		console.log("Raw post sources:", post.sources);
+		const parsedSources = post.sources ? JSON.parse(post.sources as string) : null;
+		console.log("Parsed post sources:", parsedSources);
+		return {
+			...post,
+			type: "post",
+			sources: parsedSources,
+		};
 	}
 
-	console.log("Content not found");
 	return null;
 }
 
@@ -103,12 +121,10 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 	const content = await getContentFromSlug(params.slug);
 
 	if (!content) {
-		return (
-			<SidebarPage>
-				<ContentNotFound />
-			</SidebarPage>
-		);
+		return <ContentNotFound />;
 	}
+
+	console.log("Sources:", content.sources); // Add this line
 
 	const jsonLd = {
 		"@context": "https://schema.org",
@@ -136,9 +152,22 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		<SidebarPage>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
-				<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8 mx-auto">
-					<MDXRemote source={(content as { content: string }).content} components={MDXComponents} />
-				</article>
+				<div className="relative max-w-4xl mx-auto">
+					<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8">
+						<MDXRemote
+							source={content.content}
+							components={{
+								...MDXComponents,
+							}}
+						/>
+					</article>
+					<div className="absolute top-8 left-full ml-8 w-64">
+						<div className="sticky top-8">
+							<AISummary />
+						</div>
+					</div>
+				</div>
+				{content.sources && <SourcesComponent sources={content.sources} />}
 				<BacklinkNewsletterCTA />
 			</Suspense>
 		</SidebarPage>

@@ -10,6 +10,53 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { deleteContentType, createPage, updatePage, deletePage, createPost, updatePost, deletePost } from "../actions";
 import Link from "next/link";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+const NoProse = ({ children }) => <div className="not-prose">{children}</div>;
+
+export const MDXComponents = {
+	Accordion: (props) => (
+		<NoProse>
+			<Accordion {...props} />
+		</NoProse>
+	),
+	AccordionContent: (props) => (
+		<NoProse>
+			<AccordionContent {...props} />
+		</NoProse>
+	),
+	AccordionItem: (props) => (
+		<NoProse>
+			<AccordionItem {...props} />
+		</NoProse>
+	),
+	AccordionTrigger: (props) => (
+		<NoProse>
+			<AccordionTrigger {...props} />
+		</NoProse>
+	),
+	h2: ({ children, ...props }) => {
+		if (children === "Sources") {
+			return (
+				<h2 {...props} className="hidden-sources">
+					{children}
+				</h2>
+			);
+		}
+		return <h2 {...props}>{children}</h2>;
+	},
+	p: ({ children, ...props }) => {
+		const parentHeading = props["data-parent-heading"];
+		if (parentHeading === "Sources") {
+			return (
+				<p {...props} className="hidden-sources">
+					{children}
+				</p>
+			);
+		}
+		return <p {...props}>{children}</p>;
+	},
+};
 
 export default function ContentManagement() {
 	const [activeTab, setActiveTab] = useState("content-types");

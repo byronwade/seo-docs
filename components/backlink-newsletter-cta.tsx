@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,11 @@ export function BacklinkNewsletterCTA() {
 	const [copied, setCopied] = useState(false);
 	const [email, setEmail] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [currentUrl, setCurrentUrl] = useState("");
+
+	useEffect(() => {
+		setCurrentUrl(window.location.href);
+	}, []);
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(window.location.href);
@@ -38,7 +43,7 @@ export function BacklinkNewsletterCTA() {
 						</h2>
 						<p className="text-foreground text-base">Help others discover this valuable content by linking to this page. It&apos;s a win-win for SEO!</p>
 						<div className="flex items-center space-x-2">
-							<Input value={window.location.href} readOnly className="bg-background/50 border-primary/20 text-xs" />
+							<Input value={currentUrl} readOnly className="bg-background/50 border-primary/20 text-xs" />
 							<TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger asChild>
