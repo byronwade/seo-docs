@@ -734,7 +734,7 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 					</div>
 				</header>
 				<div className="flex flex-col gap-4 p-4 mx-auto">{children}</div>
-				<footer className="w-full py-6 bg-gray-50 border-t rounded-b-xl">
+				<footer className="w-full py-6 bg-gray-50 border-y rounded-b-xl flex justify-end flex-grow">
 					<div className="container mx-auto px-4">
 						<p className="text-center text-sm text-gray-600">
 							Made with{" "}
