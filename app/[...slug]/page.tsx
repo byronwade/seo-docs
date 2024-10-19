@@ -1,13 +1,12 @@
-import { Metadata } from 'next';
-import { Layout } from "@/components/layout";
+import { Metadata } from "next";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
-import { BlogEmailSignup } from "@/components/blog-email-signup";
+import { BacklinkNewsletterCTA } from "@/components/backlink-newsletter-cta";
 import { Suspense } from "react";
 import { PrismaClient } from "@prisma/client";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import MDXComponents from "@/components/MDXComponents";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-
+import SidebarPage from "@/components/components-sidebar";
+import { ContentNotFound } from "@/components/content-not-found";
 const prisma = new PrismaClient();
 
 // Function to generate metadata for SEO purposes
@@ -15,10 +14,7 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
 	const content = await getContentFromSlug(params.slug);
 
 	if (!content) {
-		return {
-			title: "Page Not Found",
-			description: "The requested page could not be found.",
-		};
+		return <ContentNotFound />;
 	}
 
 	return {
@@ -108,10 +104,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
 	if (!content) {
 		return (
-			<Layout>
-				<h1>Content Not Found</h1>
-				<p>The requested page could not be found.</p>
-			</Layout>
+			<SidebarPage>
+				<ContentNotFound />
+			</SidebarPage>
 		);
 	}
 
@@ -138,20 +133,14 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 	};
 
 	return (
-		<Layout>
+		<SidebarPage>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
-				<Article content={content} />
+				<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8 mx-auto">
+					<MDXRemote source={(content as { content: string }).content} components={MDXComponents} />
+				</article>
+				<BacklinkNewsletterCTA />
 			</Suspense>
-		</Layout>
-	);
-}
-
-function Article({ content }: { content: unknown }) {
-	return (
-		<article className="prose dark:prose-invert mt-8 space-y-8">
-			<MDXRemote source={(content as { content: string }).content} components={MDXComponents} />
-			<BlogEmailSignup />
-		</article>
+		</SidebarPage>
 	);
 }
