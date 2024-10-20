@@ -474,12 +474,12 @@ const data = {
 			icon: Newspaper,
 			badge: "New",
 		},
-		{
-			name: "Tools",
-			url: "/tools",
-			icon: Wrench,
-			badge: "New",
-		},
+		// {
+		// 	name: "Tools",
+		// 	url: "/tools",
+		// 	icon: Wrench,
+		// 	badge: "New",
+		// },
 	],
 };
 
