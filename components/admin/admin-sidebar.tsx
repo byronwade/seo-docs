@@ -41,13 +41,13 @@ const data = {
 		},
 		{
 			title: "Custom Page Types",
-			url: "/admin/custom-page-types",
+			url: "/admin/custom-page-types/",
 			icon: SquareTerminal,
 			isActive: true,
 			items: [
 				{
 					title: "Create New",
-					url: "/admin/custom-page-types/create",
+					url: "/admin/custom-page-types/add-update",
 				},
 				{
 					title: "Settings",
