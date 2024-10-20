@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/admin/Sidebar";
 import { CommandPalette } from "@/components/admin/CommandPalette";
 
-export default function AdminInterface({ children }) {
-	const [activeSection, setActiveSection] = useState("dashboard");
+export default function AdminInterface({ children }: { children: React.ReactNode }) {
 	const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
 	useEffect(() => {
@@ -21,7 +20,7 @@ export default function AdminInterface({ children }) {
 
 	return (
 		<div className="flex h-screen bg-background">
-			<Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+			<Sidebar />
 			<div className="flex flex-col flex-1 overflow-hidden">
 				<main className="flex-1 overflow-auto">{children}</main>
 			</div>

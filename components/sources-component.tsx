@@ -108,7 +108,7 @@ export function SourcesComponent({ sources }: { sources: Source[] }) {
 					{categorizedSources.map((category, index) => (
 						<div key={index} className="space-y-2">
 							<div className="flex items-center gap-2 text-lg font-semibold">
-								{React.createElement(categoryIcons[category.type] || Globe, { className: "h-5 w-5" })}
+								{React.createElement(categoryIcons[category.type as keyof typeof categoryIcons] || Globe, { className: "h-5 w-5" })}
 								<span>{category.type}</span>
 							</div>
 							<ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">

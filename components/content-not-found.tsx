@@ -16,7 +16,7 @@ export function ContentNotFound() {
 					<path d="M180 120L220 180M220 120L180 180" stroke="currentColor" strokeWidth="12" strokeLinecap="round" />
 				</svg>
 				<h1 className="text-4xl font-bold text-center mb-4">Content Not Found</h1>
-				<p className="text-center text-muted-foreground mb-8">Oops! The content you're looking for seems to have wandered off. Let's get you back on track.</p>
+				<p className="text-center text-muted-foreground mb-8">Oops! The content you&apos;re looking for seems to have wandered off. Let&apos;s get you back on track.</p>
 				<div className="flex justify-center">
 					<Button asChild>
 						<Link href="/" className="flex items-center">

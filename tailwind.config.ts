@@ -8,7 +8,7 @@ const config: Config = {
 			typography: {
 				DEFAULT: {
 					css: {
-						maxWidth: "100%",
+						maxWidth: "100ch",
 					},
 				},
 			},

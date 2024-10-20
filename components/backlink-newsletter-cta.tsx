@@ -35,7 +35,7 @@ export function BacklinkNewsletterCTA() {
 	return (
 		<Card className="w-full my-8 overflow-hidden">
 			<CardContent className="p-6">
-				<div className="grid gap-6 md:grid-cols-2">
+				<div className="grid gap-6 xl:grid-cols-2">
 					<div className="space-y-4">
 						<h2 className="text-2xl font-bold flex items-center text-primary">
 							<Link2 className="mr-3 h-8 w-8" />
@@ -79,7 +79,7 @@ export function BacklinkNewsletterCTA() {
 							</ul>
 						</div>
 					</div>
-					<div className="space-y-4 md:border-l md:border-primary/10 md:pl-6">
+					<div className="space-y-4 xl:border-l xl:border-primary/10 xl:pl-6 border-0 pl-0">
 						<h2 className="text-2xl font-bold flex items-center text-secondary-foreground">
 							<Mail className="mr-3 h-8 w-8" />
 							Stay Updated

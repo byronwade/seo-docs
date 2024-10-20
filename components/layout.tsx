@@ -66,7 +66,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
 	const router = useRouter();
 	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
-	const [currentActiveIndex, setCurrentActiveIndex] = useState<number>(-1);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_currentActiveIndex, setCurrentActiveIndex] = useState<number>(-1);
 
 	const toggleTheme = () => {
 		setTheme(theme === "light" ? "dark" : "light");

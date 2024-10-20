@@ -1,7 +1,7 @@
 // app/actions.ts
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
@@ -26,13 +26,18 @@ export async function deleteContentType(id: bigint) {
 	await prisma.contentType.delete({ where: { id } });
 	revalidatePath("/admin");
 }
-
 // Page actions
-export async function createPage(data: any) {
-	try {
-		const result = await prisma.page.create({
-			data: {
-				title: data.title,
+export async function createPage(data: {
+  title: string;
+  slug: string;
+  content: string;
+  author: string;
+  contentTypeId: string;
+}) {
+  try {
+    const result = await prisma.page.create({
+      data: {
+        title: data.title,
 				slug: data.slug,
 				content: data.content,
 				author: data.author,
@@ -48,7 +53,16 @@ export async function createPage(data: any) {
 	}
 }
 
-export async function updatePage(data: any) {
+export async function updatePage(data: {
+  id: string | number;
+  title?: string;
+  slug?: string;
+  content?: string;
+  author?: string;
+  contentTypeId?: string | number;
+  date?: string;
+  [key: string]: unknown;
+}) {
 	if (!data || typeof data !== "object") {
 		throw new Error("Invalid data provided to updatePage");
 	}
@@ -59,7 +73,7 @@ export async function updatePage(data: any) {
 		throw new Error("Missing id for updatePage");
 	}
 
-	const updateData: any = {
+	const updateData: unknown = {
 		...restData,
 		...(contentTypeId && { contentType: { connect: { id: BigInt(contentTypeId) } } }),
 		...(date && { date: new Date(date) }),
@@ -67,7 +81,7 @@ export async function updatePage(data: any) {
 
 	const page = await prisma.page.update({
 		where: { id: BigInt(id) },
-		data: updateData,
+		data: updateData as Prisma.PageUpdateInput,
 		include: { contentType: true },
 	});
 

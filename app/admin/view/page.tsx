@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ChevronLeft, ChevronRight, Plus, Search, SortAsc, SortDesc, Trash2, AlertCircle, CheckCircle2, Settings, MoreHorizontal, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, SortAsc, SortDesc, Trash2, AlertCircle, CheckCircle2, Settings, MoreHorizontal, Info } from "lucide-react";
 
 // Mock data for demonstration
 const initialData = [
@@ -72,6 +72,7 @@ export default function AdminPanelComponent() {
 			setSuccessMessage("Selected items deleted successfully");
 			setTimeout(() => setSuccessMessage(null), 3000);
 		} catch (error) {
+			console.error("Error deleting items:", error);
 			setErrorMessage("Failed to delete selected items");
 			setTimeout(() => setErrorMessage(null), 3000);
 		}
@@ -82,10 +83,11 @@ export default function AdminPanelComponent() {
 	};
 
 	const filteredData = data.filter((item) => Object.values(item).some((value) => value.toString().toLowerCase().includes(searchTerm.toLowerCase())));
-
 	const sortedData = [...filteredData].sort((a, b) => {
-		if (a[sortColumn] < b[sortColumn]) return sortDirection === "asc" ? -1 : 1;
-		if (a[sortColumn] > b[sortColumn]) return sortDirection === "asc" ? 1 : -1;
+		const aValue = a[sortColumn as keyof typeof a];
+		const bValue = b[sortColumn as keyof typeof b];
+		if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+		if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
 		return 0;
 	});
 
@@ -210,7 +212,7 @@ export default function AdminPanelComponent() {
 																</Popover>
 															</div>
 														) : (
-															<span className="text-sm">{item[column.key]}</span>
+															<span className="text-sm">{item[column.key as keyof typeof item]}</span>
 														)}
 													</TableCell>
 												)

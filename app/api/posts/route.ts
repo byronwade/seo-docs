@@ -12,9 +12,22 @@ export async function POST(request: Request) {
   const body = await request.json()
   const post = await prisma.post.create({
     data: {
-      name: body.name,
+      title: body.name,
       slug: body.slug,
+      content: body.content,
+      author: body.authorId,
+      contentType: body.contentType,
     },
   })
-  return NextResponse.json(post)
+
+  // Convert BigInt to String before serializing
+  const serializedPost = {
+    ...post,
+    id: post.id.toString(),
+    authorId: post.author.toString(),
+    createdAt: post.createdAt.toISOString(),
+    updatedAt: post.updatedAt.toISOString(),
+  }
+
+  return NextResponse.json(serializedPost)
 }

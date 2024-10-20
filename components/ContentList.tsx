@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export function ContentList({ type }) {
-	const [content, setContent] = useState([]);
+export function ContentList({ type }: { type: string }) {
+	const [content, setContent] = useState<unknown[]>([]);
 
 	useEffect(() => {
 		fetch(`/api/${type}`)
@@ -22,11 +23,11 @@ export function ContentList({ type }) {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{content.map((item) => (
+				{content.map((item: any) => (
 					<TableRow key={item.id}>
 						<TableCell>{item.title || item.name}</TableCell>
 						<TableCell>{item.slug}</TableCell>
-						{type !== "content-types" && <TableCell>{item.contentType.name}</TableCell>}
+						{type !== "content-types" && <TableCell>{item.contentType?.name}</TableCell>}
 					</TableRow>
 				))}
 			</TableBody>

@@ -1,24 +1,25 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ReactNode } from "react";
 
-const NoProse = ({ children }) => <div className="not-prose">{children}</div>;
+const NoProse = ({ children }: { children: ReactNode }) => <div className="not-prose">{children}</div>;
 
 export const MDXComponents = {
-	Accordion: (props) => (
+	Accordion: (props: React.ComponentProps<typeof Accordion>) => (
 		<NoProse>
 			<Accordion {...props} />
 		</NoProse>
 	),
-	AccordionContent: (props) => (
+	AccordionContent: (props: React.ComponentProps<typeof AccordionContent>) => (
 		<NoProse>
 			<AccordionContent {...props} />
 		</NoProse>
 	),
-	AccordionItem: (props) => (
+	AccordionItem: (props: React.ComponentProps<typeof AccordionItem>) => (
 		<NoProse>
 			<AccordionItem {...props} />
 		</NoProse>
 	),
-	AccordionTrigger: (props) => (
+	AccordionTrigger: (props: React.ComponentProps<typeof AccordionTrigger>) => (
 		<NoProse>
 			<AccordionTrigger {...props} />
 		</NoProse>

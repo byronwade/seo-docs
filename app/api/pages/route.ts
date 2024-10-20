@@ -77,8 +77,12 @@ export async function POST(request: Request) {
     }
     
     return NextResponse.json(serializedPage)
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating page:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    } else {
+      return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 })
+    }
   }
 }

@@ -16,36 +16,32 @@ const prisma = new PrismaClient();
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
 	const content = await getContentFromSlug(params.slug);
 
-	if (!content) {
-		return <ContentNotFound />;
-	}
-
 	return {
-		title: content.seoTitle ?? content.title ?? undefined,
-		description: content.seoDescription ?? content.description ?? undefined,
+		title: content?.seoTitle ?? content?.title ?? undefined,
+		description: content?.seoDescription ?? content?.description ?? undefined,
 		openGraph: {
-			title: content.seoTitle ?? content.title ?? undefined,
-			description: content.seoDescription ?? content.description ?? undefined,
+			title: content?.seoTitle ?? content?.title ?? undefined,
+			description: content?.seoDescription ?? content?.description ?? undefined,
 			url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
 			type: "article",
 			images: [
 				{
-					url: content.seoImage || content.image || "/images/default-image.jpg",
+					url: content?.seoImage || content?.image || "/images/default-image.jpg",
 					width: 1200,
 					height: 630,
-					alt: content.title,
+					alt: content?.title,
 				},
 			],
 		},
 		twitter: {
 			card: "summary_large_image",
 			site: "@yourwebsite",
-			title: content.seoTitle ?? content.title ?? undefined,
-			description: content.seoDescription ?? content.description ?? undefined,
+			title: content?.seoTitle ?? content?.title ?? undefined,
+			description: content?.seoDescription ?? content?.description ?? undefined,
 			images: [
 				{
-					url: content.seoImage || content.image || "/images/default-image.jpg",
-					alt: content.title,
+					url: content?.seoImage || content?.image || "/images/default-image.jpg",
+					alt: content?.title,
 				},
 			],
 		},
@@ -120,23 +116,17 @@ async function getContentFromSlug(slug: string[]) {
 export default async function Page({ params }: { params: { slug: string[] } }) {
 	const content = await getContentFromSlug(params.slug);
 
-	if (!content) {
-		return <ContentNotFound />;
-	}
-
-	console.log("Sources:", content.sources); // Add this line
-
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: content.title,
-		description: content.description,
+		headline: content?.title ?? "",
+		description: content?.description ?? "",
 		author: {
 			"@type": "Person",
-			name: content.author,
+			name: content?.author ?? "",
 		},
-		datePublished: content.date.toISOString(),
-		image: content.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/default-image.jpg`,
+		datePublished: content?.date?.toISOString() ?? "",
+		image: content?.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/default-image.jpg`,
 		url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
 		publisher: {
 			"@type": "Organization",
@@ -148,6 +138,14 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		},
 	};
 
+	// If content is not found, return the ContentNotFound component
+	if (!content) {
+		return (
+			<SidebarPage>
+				<ContentNotFound />
+			</SidebarPage>
+		);
+	}
 	return (
 		<SidebarPage>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

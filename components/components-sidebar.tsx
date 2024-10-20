@@ -3,14 +3,76 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-import { Bell, ChartBar, BookOpen, Bot, ChevronRight, Folder, Frame, LifeBuoy, Map, MoreHorizontal, PieChart, Send, Settings2, Share, SquareTerminal, Trash2, MapPin, ShoppingCart, TrendingUp, Zap, Smartphone, Globe, Briefcase, CheckCircle, Aperture, FileText, Link as LinkIcon, Copy, CornerUpRight, CornerUpLeft, LineChart, GalleryVerticalEnd, Trash, ArrowUp, ArrowDown, BookmarkMinus, Facebook, Twitter, Linkedin, Instagram, ExternalLink, Home, Newspaper, ScrollText } from "lucide-react";
+import {
+	ChartBar,
+	Check,
+	Bot,
+	ChevronRight,
+	Folder,
+	Frame,
+	LifeBuoy,
+	Map,
+	PieChart,
+	SquareTerminal,
+	MapPin,
+	ShoppingCart,
+	TrendingUp,
+	Zap,
+	Smartphone,
+	Globe,
+	Briefcase,
+	CheckCircle,
+	Aperture,
+	Link as LinkIcon,
+	Copy,
+	BookmarkMinus,
+	Home,
+	Newspaper,
+	ScrollText,
+	Wrench,
+	FileDown,
+	Printer,
+	Share,
+	Bookmark,
+	Languages,
+	FileText,
+	User,
+	AlertTriangle,
+	MessageSquare,
+	Trash2,
+	Wifi,
+	Clock,
+	Maximize2,
+	MoreHorizontal,
+	File,
+	FileText as FileTextIcon,
+	FileCode,
+	FileAudio,
+	Table,
+	Palette,
+	Image as ImageIcon,
+	BookOpen,
+	ExternalLink,
+	Flag,
+	Send,
+	Focus,
+	Mail,
+	Twitter,
+	Facebook,
+	Linkedin,
+	MessageCircle,
+	QrCode,
+	Pocket,
+	Database,
+	Cloud,
+} from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuSubTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuPortal, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { toast } from "@/hooks/use-toast";
 import { HeartFilledIcon } from "@radix-ui/react-icons";
 import RightSidebar from "@/components/right-sidebar";
 
@@ -397,12 +459,18 @@ const data = {
 			url: "/news",
 			icon: Newspaper,
 		},
+		{
+			name: "Tools",
+			url: "/tools",
+			icon: Wrench,
+		},
 	],
 };
 
 export default function SidebarPage({ children }: { children: React.ReactNode }) {
 	const [isScrolled, setIsScrolled] = useState(false);
-
+	const [linkCopied, setLinkCopied] = useState(false);
+	const [articleUrl, setArticleUrl] = useState("");
 	useEffect(() => {
 		const handleScroll = () => {
 			setIsScrolled(window.scrollY > 0);
@@ -412,13 +480,14 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
-	const copyToClipboard = () => {
-		navigator.clipboard.writeText(window.location.href).then(() => {
-			toast({
-				title: "Link copied to clipboard",
-				description: "You can now paste the link anywhere.",
-			});
-		});
+	useEffect(() => {
+		setArticleUrl(window.location.href);
+	}, []);
+
+	const handleCopyLink = () => {
+		navigator.clipboard.writeText(articleUrl);
+		setLinkCopied(true);
+		setTimeout(() => setLinkCopied(false), 2000);
 	};
 
 	return (
@@ -437,6 +506,17 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
+
+						{/* <SidebarMenuItem>
+							<SidebarMenuButton className="bg-gradient-to-r from-blue-500 to-purple-500 text-white" size="sm" asChild>
+								<Link href="/">
+									<Star className="mr-2 h-4 w-4" />
+									<div className="grid flex-1 text-left text-sm leading-tight">
+										<span className="truncate text-xs">Upgrade to Pro</span>
+									</div>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenuItem> */}
 					</SidebarMenu>
 				</SidebarHeader>
 
@@ -622,35 +702,32 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 										<Share className="lucide lucide-share" />
 									</button>
 								</DropdownMenuTrigger>
-								<DropdownMenuContent className="w-56" align="end" forceMount>
-									<DropdownMenuLabel>Share</DropdownMenuLabel>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem>
-											<Facebook className="mr-2 h-4 w-4" />
-											<span>Facebook</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Twitter className="mr-2 h-4 w-4" />
-											<span>Twitter</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Linkedin className="mr-2 h-4 w-4" />
-											<span>LinkedIn</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Instagram className="mr-2 h-4 w-4" />
-											<span>Instagram</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
-									<DropdownMenuItem onClick={copyToClipboard}>
-										<LinkIcon className="mr-2 h-4 w-4" />
-										<span>Copy link</span>
-										<DropdownMenuShortcut>
-											<Copy className="h-4 w-4" />
-										</DropdownMenuShortcut>
-									</DropdownMenuItem>
+								<DropdownMenuContent className="p-4 space-y-3" align="end" forceMount>
+									<div className="flex justify-between items-center space-x-2">
+										<Button variant="outline" size="sm" className="flex-1 h-10 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-200">
+											<Facebook className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+											<span className="sr-only">Share on Facebook</span>
+										</Button>
+										<Button variant="outline" size="sm" className="flex-1 h-10 hover:bg-sky-100 dark:hover:bg-sky-900 transition-colors duration-200">
+											<Twitter className="h-4 w-4 text-sky-500 dark:text-sky-400" />
+											<span className="sr-only">Share on Twitter</span>
+										</Button>
+										<Button variant="outline" size="sm" className="flex-1 h-10 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-200">
+											<Linkedin className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+											<span className="sr-only">Share on LinkedIn</span>
+										</Button>
+										<Button variant="outline" size="sm" className="flex-1 h-10 hover:bg-red-100 dark:hover:bg-red-900 transition-colors duration-200">
+											<Mail className="h-4 w-4 text-red-600 dark:text-red-400" />
+											<span className="sr-only">Share via Email</span>
+										</Button>
+									</div>
+									<div className="flex items-center space-x-2 text-sm">
+										<div className="flex-1 truncate bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-2 py-1">{articleUrl}</div>
+										<Button size="sm" variant="outline" className={`h-8 w-20 ${linkCopied ? "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-800" : "hover:bg-gray-100 dark:hover:bg-gray-800"} transition-colors duration-200`} onClick={handleCopyLink}>
+											{linkCopied ? <Check className="h-4 w-4 mr-1" /> : <Copy className="h-4 w-4 mr-1" />}
+											<span className="text-xs">{linkCopied ? "Copied!" : "Copy"}</span>
+										</Button>
+									</div>
 								</DropdownMenuContent>
 							</DropdownMenu>
 							<DropdownMenu>
@@ -665,70 +742,261 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 										<MoreHorizontal className="lucide lucide-ellipsis" />
 									</button>
 								</DropdownMenuTrigger>
-								<DropdownMenuContent className="w-56" align="end" forceMount>
+								<DropdownMenuContent className="w-56">
+									<DropdownMenuLabel>Article Options</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<FileDown className="mr-2 h-4 w-4" />
+											<span>Export</span>
+										</DropdownMenuSubTrigger>
+										<DropdownMenuPortal>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem>
+													<File className="mr-2 h-4 w-4" />
+													<span>PDF</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileTextIcon className="mr-2 h-4 w-4" />
+													<span>Word document</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileCode className="mr-2 h-4 w-4" />
+													<span>Markdown</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileCode className="mr-2 h-4 w-4" />
+													<span>HTML</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileTextIcon className="mr-2 h-4 w-4" />
+													<span>Plain text</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileAudio className="mr-2 h-4 w-4" />
+													<span>ePub</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Table className="mr-2 h-4 w-4" />
+													<span>CSV</span>
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuPortal>
+									</DropdownMenuSub>
+
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Printer className="mr-2 h-4 w-4" />
+											<span>Print</span>
+										</DropdownMenuSubTrigger>
+										<DropdownMenuPortal>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem>
+													<Printer className="mr-2 h-4 w-4" />
+													<span>Print Article</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Palette className="mr-2 h-4 w-4" />
+													<span>Print in black and white</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<ImageIcon className="mr-2 h-4 w-4" />
+													<span>Print without images</span>
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuPortal>
+									</DropdownMenuSub>
+
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Share className="mr-2 h-4 w-4" />
+											<span>Share</span>
+										</DropdownMenuSubTrigger>
+										<DropdownMenuPortal>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem>
+													<Mail className="mr-2 h-4 w-4" />
+													<span>Email</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Twitter className="mr-2 h-4 w-4" />
+													<span>Twitter</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Facebook className="mr-2 h-4 w-4" />
+													<span>Facebook</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Linkedin className="mr-2 h-4 w-4" />
+													<span>LinkedIn</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<MessageCircle className="mr-2 h-4 w-4" />
+													<span>WhatsApp</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<MessageSquare className="mr-2 h-4 w-4" />
+													<span>Reddit</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<LinkIcon className="mr-2 h-4 w-4" />
+													<span>Copy link</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileText className="mr-2 h-4 w-4" />
+													<span>Note-taking app</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<QrCode className="mr-2 h-4 w-4" />
+													<span>QR code</span>
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuPortal>
+									</DropdownMenuSub>
+
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Bookmark className="mr-2 h-4 w-4" />
+											<span>Save</span>
+										</DropdownMenuSubTrigger>
+										<DropdownMenuPortal>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem>
+													<BookOpen className="mr-2 h-4 w-4" />
+													<span>Add to Reading List</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Bookmark className="mr-2 h-4 w-4" />
+													<span>Bookmark Article</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Pocket className="mr-2 h-4 w-4" />
+													<span>Save to Pocket</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<FileText className="mr-2 h-4 w-4" />
+													<span>Save to Instapaper</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Database className="mr-2 h-4 w-4" />
+													<span>Save to Google Drive</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Cloud className="mr-2 h-4 w-4" />
+													<span>Save to Dropbox</span>
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuPortal>
+									</DropdownMenuSub>
+
+									{/* <DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Edit className="mr-2 h-4 w-4" />
+											<span>Edit & Annotate</span>
+										</DropdownMenuSubTrigger>
+										<DropdownMenuPortal>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem>
+													<Edit className="mr-2 h-4 w-4" />
+													<span>Edit Article</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<Highlighter className="mr-2 h-4 w-4" />
+													<span>Highlight Text</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<MessageSquare className="mr-2 h-4 w-4" />
+													<span>Add Annotations</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<MessageCircle className="mr-2 h-4 w-4" />
+													<span>Add Comments</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem>
+													<History className="mr-2 h-4 w-4" />
+													<span>View Revision History</span>
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuPortal>
+									</DropdownMenuSub> */}
+
 									<DropdownMenuGroup>
+										{/* <DropdownMenuItem>
+											<Volume2 className="mr-2 h-4 w-4" />
+											<span>Text-to-Speech</span>
+										</DropdownMenuItem> */}
+										{/* <DropdownMenuItem>
+											<Headphones className="mr-2 h-4 w-4" />
+											<span>Download audio version</span>
+										</DropdownMenuItem> */}
 										<DropdownMenuItem>
-											<Settings2 className="mr-2 h-4  w-4" />
-											<span>Customize Page</span>
+											<Languages className="mr-2 h-4 w-4" />
+											<span>Translate Article</span>
 										</DropdownMenuItem>
 										<DropdownMenuItem>
-											<FileText className="mr-2 h-4 w-4" />
-											<span>Turn into wiki</span>
+											<User className="mr-2 h-4 w-4" />
+											<span>View Author Profile</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<ExternalLink className="mr-2 h-4 w-4" />
+											<span>View Source References</span>
 										</DropdownMenuItem>
 									</DropdownMenuGroup>
+
 									<DropdownMenuSeparator />
+
 									<DropdownMenuGroup>
+										<DropdownMenuItem>
+											<AlertTriangle className="mr-2 h-4 w-4" />
+											<span>Report an Issue</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Flag className="mr-2 h-4 w-4" />
+											<span>Request Correction</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Send className="mr-2 h-4 w-4" />
+											<span>Submit Feedback</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Wifi className="mr-2 h-4 w-4" />
+											<span>Enable Offline Mode</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Clock className="mr-2 h-4 w-4" />
+											<span>View Reading Statistics</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Focus className="mr-2 h-4 w-4" />
+											<span>Turn on Focus Mode</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<Maximize2 className="mr-2 h-4 w-4" />
+											<span>Toggle Full-Screen Mode</span>
+										</DropdownMenuItem>
+									</DropdownMenuGroup>
+
+									{/* <DropdownMenuSeparator />
+
+									<DropdownMenuGroup>
+										<DropdownMenuItem>
+											<Code className="mr-2 h-4 w-4" />
+											<span>View Source Code</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<FileCode className="mr-2 h-4 w-4" />
+											<span>Inspect Markdown</span>
+										</DropdownMenuItem>
 										<DropdownMenuItem>
 											<LinkIcon className="mr-2 h-4 w-4" />
-											<span>Copy Link</span>
+											<span>Generate API Link</span>
 										</DropdownMenuItem>
 										<DropdownMenuItem>
-											<Copy className="mr-2 h-4 w-4" />
-											<span>Duplicate</span>
+											<FileJson className="mr-2 h-4 w-4" />
+											<span>Export Metadata</span>
 										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<CornerUpRight className="mr-2 h-4 w-4" />
-											<span>Move to</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Trash2 className="mr-2 h-4 w-4" />
-											<span>Move to Trash</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem>
-											<CornerUpLeft className="mr-2 h-4 w-4" />
-											<span>Undo</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<LineChart className="mr-2 h-4 w-4" />
-											<span>View analytics</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<GalleryVerticalEnd className="mr-2 h-4 w-4" />
-											<span>Version History</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Trash className="mr-2 h-4 w-4" />
-											<span>Show delete pages</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<Bell className="mr-2 h-4 w-4" />
-											<span>Notifications</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
-									<DropdownMenuSeparator />
-									<DropdownMenuGroup>
-										<DropdownMenuItem>
-											<ArrowUp className="mr-2 h-4 w-4" />
-											<span>Import</span>
-										</DropdownMenuItem>
-										<DropdownMenuItem>
-											<ArrowDown className="mr-2 h-4 w-4" />
-											<span>Export</span>
-										</DropdownMenuItem>
-									</DropdownMenuGroup>
+									</DropdownMenuGroup> */}
 								</DropdownMenuContent>
 							</DropdownMenu>
 							{/*
