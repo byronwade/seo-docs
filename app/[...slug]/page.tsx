@@ -152,8 +152,9 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		<SidebarPage>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
-				<div className="relative max-w-4xl mx-auto">
-					<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8">
+				<div className="relative max-w-7xl mx-auto">
+					<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8 mb-10">
+						<AISummary />
 						<MDXRemote
 							source={content.content}
 							components={{
@@ -161,11 +162,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 							}}
 						/>
 					</article>
-					<div className="absolute top-8 left-full ml-8 w-64">
-						<div className="sticky top-8">
-							<AISummary />
-						</div>
-					</div>
 				</div>
 				{content.sources && <SourcesComponent sources={content.sources} />}
 				<BacklinkNewsletterCTA />

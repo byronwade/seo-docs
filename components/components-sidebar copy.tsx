@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { toast } from "@/hooks/use-toast";
 import { HeartFilledIcon } from "@radix-ui/react-icons";
-import RightSidebar from "@/components/right-sidebar";
 
 const data = {
 	navMain: [
@@ -27,20 +26,130 @@ const data = {
 					url: "#",
 					items: [
 						{
-							title: "Latent Semantic Indexing (LSI)",
+							title: "Keyword Research",
 							url: "#",
+							items: [
+								{
+									title: "Long-Tail Keywords",
+									url: "#",
+								},
+								{
+									title: "Latent Semantic Indexing (LSI)",
+									url: "#",
+								},
+								{
+									title: "Primary vs. Secondary Keywords",
+									url: "#",
+								},
+							],
 						},
 						{
-							title: "Semantic Search",
+							title: "Content Quality",
 							url: "#",
+							items: [
+								{
+									title: "E-A-T (Expertise, Authority, Trustworthiness)",
+									url: "#",
+								},
+								{
+									title: "Avoiding Thin Content",
+									url: "#",
+								},
+								{
+									title: "Content Freshness",
+									url: "#",
+								},
+							],
 						},
 						{
 							title: "User Engagement Signals",
 							url: "#",
+							items: [
+								{
+									title: "Bounce Rate Optimization",
+									url: "#",
+								},
+								{
+									title: "Improving Time on Page",
+									url: "#",
+								},
+								{
+									title: "Scroll Depth Analysis",
+									url: "#",
+								},
+							],
+						},
+						{
+							title: "Content Structure",
+							url: "#",
+							items: [
+								{
+									title: "Using Headings (H1, H2, H3)",
+									url: "#",
+								},
+								{
+									title: "Bullet Points and Lists",
+									url: "#",
+								},
+								{
+									title: "Internal Linking Strategy",
+									url: "#",
+								},
+							],
 						},
 						{
 							title: "Rich Snippets",
 							url: "#",
+							items: [
+								{
+									title: "Schema Markup Implementation",
+									url: "#",
+								},
+								{
+									title: "Featured Snippets",
+									url: "#",
+								},
+								{
+									title: "People Also Ask Boxes",
+									url: "#",
+								},
+							],
+						},
+						{
+							title: "Optimizing Images",
+							url: "#",
+							items: [
+								{
+									title: "Alt Text Best Practices",
+									url: "#",
+								},
+								{
+									title: "Image Compression",
+									url: "#",
+								},
+								{
+									title: "Using WebP Format",
+									url: "#",
+								},
+							],
+						},
+						{
+							title: "Multimedia Integration",
+							url: "#",
+							items: [
+								{
+									title: "Video SEO",
+									url: "#",
+								},
+								{
+									title: "Embedding Interactive Elements",
+									url: "#",
+								},
+								{
+									title: "Podcast SEO",
+									url: "#",
+								},
+							],
 						},
 					],
 				},
@@ -49,12 +158,50 @@ const data = {
 					url: "#",
 					items: [
 						{
+							title: "SEO-Friendly URLs",
+							url: "#",
+							items: [
+								{
+									title: "Keyword Usage in URLs",
+									url: "#",
+								},
+								{
+									title: "Avoiding URL Parameters",
+									url: "#",
+								},
+								{
+									title: "Subfolders vs. Subdomains",
+									url: "#",
+								},
+							],
+						},
+						{
 							title: "Canonical Tags",
 							url: "#",
+							items: [
+								{
+									title: "Avoiding Duplicate Content",
+									url: "#",
+								},
+								{
+									title: "Cross-Domain Canonicals",
+									url: "#",
+								},
+							],
 						},
 						{
 							title: "Breadcrumb Navigation",
 							url: "#",
+							items: [
+								{
+									title: "SEO Benefits of Breadcrumbs",
+									url: "#",
+								},
+								{
+									title: "Structured Data for Breadcrumbs",
+									url: "#",
+								},
+							],
 						},
 					],
 				},
@@ -66,33 +213,89 @@ const data = {
 			icon: Bot,
 			items: [
 				{
-					title: "Backlinks",
+					title: "Link Building",
 					url: "#",
 					items: [
 						{
-							title: "Disavow Links",
+							title: "Backlink Quality",
+							url: "#",
+							items: [
+								{
+									title: "Domain Authority",
+									url: "#",
+								},
+								{
+									title: "Relevance of Linking Page",
+									url: "#",
+								},
+							],
+						},
+						{
+							title: "Link Earning Techniques",
+							url: "#",
+							items: [
+								{
+									title: "Guest Blogging",
+									url: "#",
+								},
+								{
+									title: "Broken Link Building",
+									url: "#",
+								},
+								{
+									title: "Skyscraper Technique",
+									url: "#",
+								},
+							],
+						},
+						{
+							title: "Link Disavowal",
+							url: "#",
+							items: [
+								{
+									title: "Using Google's Disavow Tool",
+									url: "#",
+								},
+								{
+									title: "When to Disavow Links",
+									url: "#",
+								},
+							],
+						},
+					],
+				},
+				{
+					title: "Social Media Signals",
+					url: "#",
+					items: [
+						{
+							title: "Impact of Social Shares",
 							url: "#",
 						},
 						{
-							title: "Negative SEO",
+							title: "Building a Social Media Following",
 							url: "#",
 						},
 						{
-							title: "Influencer Outreach",
+							title: "Social Bookmarking",
 							url: "#",
 						},
 					],
 				},
 				{
-					title: "Local SEO",
+					title: "Brand Mentions",
 					url: "#",
 					items: [
 						{
-							title: "Citation Building for Off-Page SEO",
+							title: "Unlinked Brand Mentions",
 							url: "#",
 						},
 						{
-							title: "Building Relationships with Local Businesses for Backlinks",
+							title: "Monitoring Brand Reputation",
+							url: "#",
+						},
+						{
+							title: "Tools for Tracking Brand Mentions",
 							url: "#",
 						},
 					],
@@ -105,15 +308,43 @@ const data = {
 			icon: BookOpen,
 			items: [
 				{
+					title: "Site Architecture",
+					url: "#",
+					items: [
+						{
+							title: "Sitemap Optimization",
+							url: "#",
+						},
+						{
+							title: "Crawl Depth",
+							url: "#",
+						},
+						{
+							title: "Internal Linking",
+							url: "#",
+						},
+					],
+				},
+				{
 					title: "Core Web Vitals",
 					url: "#",
+					items: [
+						{
+							title: "Largest Contentful Paint (LCP)",
+							url: "#",
+						},
+						{
+							title: "First Input Delay (FID)",
+							url: "#",
+						},
+						{
+							title: "Cumulative Layout Shift (CLS)",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "JavaScript SEO",
-					url: "#",
-				},
-				{
-					title: "Crawl Budget",
+					title: "Crawl Budget Optimization",
 					url: "#",
 					items: [
 						{
@@ -121,7 +352,65 @@ const data = {
 							url: "#",
 						},
 						{
-							title: "Identifying Crawl Errors",
+							title: "Managing Crawl Errors",
+							url: "#",
+						},
+						{
+							title: "Index Bloat",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Technical Site Issues",
+					url: "#",
+					items: [
+						{
+							title: "Handling 404 Errors",
+							url: "#",
+						},
+						{
+							title: "Fixing 500 Errors",
+							url: "#",
+						},
+						{
+							title: "Redirect Chains and Loops",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "JavaScript SEO",
+					url: "#",
+					items: [
+						{
+							title: "Handling Client-Side Rendering",
+							url: "#",
+						},
+						{
+							title: "Pre-Rendering for SEO",
+							url: "#",
+						},
+						{
+							title: "Lazy Loading Implementation",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Structured Data",
+					url: "#",
+					items: [
+						{
+							title: "Types of Structured Data",
+							url: "#",
+						},
+						{
+							title: "JSON-LD Implementation",
+							url: "#",
+						},
+						{
+							title: "Testing Structured Data",
 							url: "#",
 						},
 					],
@@ -134,19 +423,73 @@ const data = {
 			icon: ChartBar,
 			items: [
 				{
-					title: "Advanced Analytics",
+					title: "Google Analytics",
 					url: "#",
 					items: [
 						{
-							title: "Google Tag Manager",
+							title: "Setting Up Goals and Conversions",
 							url: "#",
 						},
 						{
-							title: "Conversion Rate Optimization (CRO) and SEO",
+							title: "Tracking User Behavior",
 							url: "#",
 						},
 						{
-							title: "Attribution Modeling",
+							title: "Event Tracking",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Google Search Console",
+					url: "#",
+					items: [
+						{
+							title: "Monitoring Search Queries",
+							url: "#",
+						},
+						{
+							title: "Fixing Coverage Issues",
+							url: "#",
+						},
+						{
+							title: "Checking Mobile Usability",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Conversion Rate Optimization (CRO)",
+					url: "#",
+					items: [
+						{
+							title: "A/B Testing for SEO",
+							url: "#",
+						},
+						{
+							title: "Improving Call-to-Action (CTA)",
+							url: "#",
+						},
+						{
+							title: "Heatmap Analysis",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Attribution Modeling",
+					url: "#",
+					items: [
+						{
+							title: "Multi-Touch Attribution",
+							url: "#",
+						},
+						{
+							title: "First-Touch Attribution",
+							url: "#",
+						},
+						{
+							title: "Last-Touch Attribution",
 							url: "#",
 						},
 					],
@@ -159,16 +502,50 @@ const data = {
 			icon: MapPin,
 			items: [
 				{
-					title: "Google Maps Optimization",
+					title: "Google My Business Optimization",
 					url: "#",
+					items: [
+						{
+							title: "Claiming Your GMB Profile",
+							url: "#",
+						},
+						{
+							title: "Optimizing GMB Listings",
+							url: "#",
+						},
+						{
+							title: "Responding to Reviews",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "Hyperlocal Targeting",
+					title: "Local Citations",
 					url: "#",
+					items: [
+						{
+							title: "Building Consistent NAP Information",
+							url: "#",
+						},
+						{
+							title: "Local Business Directories",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "Geotargeting with Paid Ads",
+					title: "Local Content Optimization",
 					url: "#",
+					items: [
+						{
+							title: "Creating Hyperlocal Content",
+							url: "#",
+						},
+						{
+							title: "Local Keyword Research",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -178,16 +555,58 @@ const data = {
 			icon: ShoppingCart,
 			items: [
 				{
-					title: "E-commerce SEO for Mobile Devices",
+					title: "Product Page Optimization",
 					url: "#",
+					items: [
+						{
+							title: "Using Rich Snippets for Products",
+							url: "#",
+						},
+						{
+							title: "Optimizing Product Descriptions",
+							url: "#",
+						},
+						{
+							title: "Image Optimization for E-commerce",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "Product Review Optimization",
+					title: "Technical E-commerce SEO",
 					url: "#",
+					items: [
+						{
+							title: "Managing Duplicate Content Issues",
+							url: "#",
+						},
+						{
+							title: "Faceted Navigation SEO",
+							url: "#",
+						},
+						{
+							title: "Handling Out-of-Stock Products",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "Rich Snippets for Products",
+					title: "SEO for E-commerce Platforms",
 					url: "#",
+					items: [
+						{
+							title: "SEO for Shopify",
+							url: "#",
+						},
+						{
+							title: "SEO for WooCommerce",
+							url: "#",
+						},
+						{
+							title: "SEO for Magento",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -199,14 +618,44 @@ const data = {
 				{
 					title: "Voice Search Optimization",
 					url: "#",
+					items: [
+						{
+							title: "Long-Tail Keyword Strategies for Voice",
+							url: "#",
+						},
+						{
+							title: "Conversational Content",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "AI in SEO",
+					title: "AI and SEO",
 					url: "#",
+					items: [
+						{
+							title: "Using AI for Content Generation",
+							url: "#",
+						},
+						{
+							title: "AI for Predictive Analytics",
+							url: "#",
+						},
+					],
 				},
 				{
-					title: "Visual Search Optimization",
+					title: "Visual Search",
 					url: "#",
+					items: [
+						{
+							title: "Optimizing for Google Lens",
+							url: "#",
+						},
+						{
+							title: "Pinterest Visual Search",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -218,25 +667,41 @@ const data = {
 				{
 					title: "Advanced Schema Markup",
 					url: "#",
+					items: [
+						{
+							title: "Rich Snippets vs. Rich Results",
+							url: "#",
+						},
+						{
+							title: "Structured Data for Articles",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Entity-Based SEO",
 					url: "#",
+					items: [
+						{
+							title: "Understanding Entity-Based Indexing",
+							url: "#",
+						},
+						{
+							title: "Using Entities for Content Optimization",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Edge SEO",
 					url: "#",
-				},
-				{
-					title: "Technical Auditing",
-					url: "#",
 					items: [
 						{
-							title: "Automated SEO Auditing",
+							title: "Server-Side Rendering for SEO",
 							url: "#",
 						},
 						{
-							title: "Automating SEO tasks",
+							title: "Leveraging CDN for Performance",
 							url: "#",
 						},
 					],
@@ -249,15 +714,35 @@ const data = {
 			icon: Smartphone,
 			items: [
 				{
-					title: "Mobile UX",
+					title: "Mobile User Experience",
 					url: "#",
-				},
-				{
-					title: "Google's Mobile Usability Reports",
-					url: "#",
+					items: [
+						{
+							title: "Optimizing Mobile Load Times",
+							url: "#",
+						},
+						{
+							title: "Mobile Navigation Best Practices",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Accelerated Mobile Pages (AMP)",
+					url: "#",
+					items: [
+						{
+							title: "Implementing AMP",
+							url: "#",
+						},
+						{
+							title: "AMP for E-commerce",
+							url: "#",
+						},
+					],
+				},
+				{
+					title: "Google's Mobile Usability Reports",
 					url: "#",
 				},
 			],
@@ -270,10 +755,30 @@ const data = {
 				{
 					title: "Hreflang Tags",
 					url: "#",
+					items: [
+						{
+							title: "Implementing Hreflang for Multilingual Sites",
+							url: "#",
+						},
+						{
+							title: "Avoiding Common Hreflang Mistakes",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Geotargeting",
 					url: "#",
+					items: [
+						{
+							title: "Using Google Search Console for Geotargeting",
+							url: "#",
+						},
+						{
+							title: "Country-Specific Content Optimization",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Cultural Differences in SEO",
@@ -293,18 +798,58 @@ const data = {
 				{
 					title: "Healthcare SEO",
 					url: "#",
+					items: [
+						{
+							title: "Local SEO for Medical Practices",
+							url: "#",
+						},
+						{
+							title: "Content Marketing for Health-Related Topics",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Real Estate SEO",
 					url: "#",
+					items: [
+						{
+							title: "Optimizing Listings for Local Search",
+							url: "#",
+						},
+						{
+							title: "Using Virtual Tours for SEO",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "SaaS SEO",
 					url: "#",
+					items: [
+						{
+							title: "SEO for Subscription Models",
+							url: "#",
+						},
+						{
+							title: "Content Marketing for Software",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Restaurant SEO",
 					url: "#",
+					items: [
+						{
+							title: "Local SEO for Restaurants",
+							url: "#",
+						},
+						{
+							title: "Using Online Reviews for SEO",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -316,14 +861,44 @@ const data = {
 				{
 					title: "Comprehensive SEO Audits",
 					url: "#",
+					items: [
+						{
+							title: "Checklist for Full Site Audit",
+							url: "#",
+						},
+						{
+							title: "Tools for SEO Auditing",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Competitor SEO Audits",
 					url: "#",
+					items: [
+						{
+							title: "Identifying Competitor Strategies",
+							url: "#",
+						},
+						{
+							title: "Benchmarking Against Competitors",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "Content Audits",
 					url: "#",
+					items: [
+						{
+							title: "Finding Thin Content",
+							url: "#",
+						},
+						{
+							title: "Updating Outdated Content",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -335,14 +910,44 @@ const data = {
 				{
 					title: "SEO for Video Content",
 					url: "#",
+					items: [
+						{
+							title: "Optimizing Video Metadata",
+							url: "#",
+						},
+						{
+							title: "Using YouTube for SEO",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "SEO for Podcasts",
 					url: "#",
+					items: [
+						{
+							title: "Optimizing Show Notes",
+							url: "#",
+						},
+						{
+							title: "Using Transcripts for SEO",
+							url: "#",
+						},
+					],
 				},
 				{
 					title: "SEO for Voice Assistants",
 					url: "#",
+					items: [
+						{
+							title: "Optimizing for Alexa Skills",
+							url: "#",
+						},
+						{
+							title: "Using Structured Data for Voice",
+							url: "#",
+						},
+					],
 				},
 			],
 		},
@@ -422,8 +1027,12 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 	};
 
 	return (
-		<SidebarProvider>
-			<Sidebar variant="inset" collapsible="offcanvas">
+		<SidebarProvider
+			style={{
+				"--sidebar-width": "20rem",
+			}}
+		>
+			<Sidebar variant="inset" collapsible="icon">
 				<SidebarHeader>
 					<SidebarMenu>
 						<SidebarMenuItem>
@@ -483,43 +1092,10 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 						<SidebarGroupLabel>Platform</SidebarGroupLabel>
 						<SidebarMenu>
 							{data.navMain.map((item) => (
-								<Collapsible key={item.title} className="group/collapsible">
-									<SidebarMenuItem>
-										<CollapsibleTrigger asChild>
-											<SidebarMenuButton>
-												<item.icon />
-												<span>{item.title}</span>
-												<ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-											</SidebarMenuButton>
-										</CollapsibleTrigger>
-										<CollapsibleContent>
-											<SidebarMenuSub>
-												{item.items?.map((subItem) => (
-													<SidebarMenuSubItem key={subItem.title}>
-														<SidebarMenuSubButton asChild>
-															<Link href={subItem.url}>
-																<span>{subItem.title}</span>
-															</Link>
-														</SidebarMenuSubButton>
-													</SidebarMenuSubItem>
-												))}
-											</SidebarMenuSub>
-										</CollapsibleContent>
-									</SidebarMenuItem>
-								</Collapsible>
+								<TreeItem key={item.title} item={item} />
 							))}
 						</SidebarMenu>
 					</SidebarGroup>
-					{/* <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-						<SidebarGroupLabel>Loading</SidebarGroupLabel>
-						<SidebarMenu>
-							{Array.from({ length: 5 }).map((_, index) => (
-								<SidebarMenuItem key={index}>
-									<SidebarMenuSkeleton showIcon />
-								</SidebarMenuItem>
-							))}
-						</SidebarMenu>
-					</SidebarGroup> */}
 					<SidebarGroup className="group-data-[collapsible=icon]:hidden">
 						<SidebarGroupLabel>Projects</SidebarGroupLabel>
 						<SidebarMenu>
@@ -731,10 +1307,6 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 									</DropdownMenuGroup>
 								</DropdownMenuContent>
 							</DropdownMenu>
-							{/*
-							//got to figure out a way to make this work
-							<Separator orientation="vertical" className="shrink-0 bg-border w-[1px] mr-2 h-4" />
-							<SidebarTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 w-7" /> */}
 						</div>
 					</div>
 				</header>
@@ -755,7 +1327,63 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 					</div>
 				</footer>
 			</SidebarInset>
-			<RightSidebar />
 		</SidebarProvider>
+	);
+}
+
+function TreeItem({ item }: { item: any }) {
+	return (
+		<SidebarMenuItem>
+			<Collapsible className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90">
+				<CollapsibleTrigger asChild>
+					<SidebarMenuButton>
+						<ChevronRight className="transition-transform" />
+						<item.icon />
+						<span>{item.title}</span>
+					</SidebarMenuButton>
+				</CollapsibleTrigger>
+				<CollapsibleContent>
+					<SidebarMenuSub>
+						{item.items?.map((subItem: any) => (
+							<TreeSubItem key={subItem.title} item={subItem} />
+						))}
+					</SidebarMenuSub>
+				</CollapsibleContent>
+			</Collapsible>
+		</SidebarMenuItem>
+	);
+}
+
+function TreeSubItem({ item }: { item: any }) {
+	if (!item.items) {
+		return (
+			<SidebarMenuSubItem>
+				<SidebarMenuSubButton asChild>
+					<Link href={item.url}>
+						<span>{item.title}</span>
+					</Link>
+				</SidebarMenuSubButton>
+			</SidebarMenuSubItem>
+		);
+	}
+
+	return (
+		<SidebarMenuSubItem className="w-full">
+			<Collapsible className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90">
+				<CollapsibleTrigger asChild>
+					<SidebarMenuSubButton>
+						<ChevronRight className="transition-transform" />
+						<span>{item.title}</span>
+					</SidebarMenuSubButton>
+				</CollapsibleTrigger>
+				<CollapsibleContent>
+					<SidebarMenuSub>
+						{item.items.map((subSubItem: any) => (
+							<TreeSubItem key={subSubItem.title} item={subSubItem} />
+						))}
+					</SidebarMenuSub>
+				</CollapsibleContent>
+			</Collapsible>
+		</SidebarMenuSubItem>
 	);
 }
