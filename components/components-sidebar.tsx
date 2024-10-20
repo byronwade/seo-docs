@@ -467,7 +467,7 @@ const data = {
 	],
 };
 
-export default function SidebarPage({ children }: { children: React.ReactNode }) {
+export default function SidebarPage({ children, noRightSidebar }: { children: React.ReactNode; noRightSidebar?: boolean }) {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [linkCopied, setLinkCopied] = useState(false);
 	const [articleUrl, setArticleUrl] = useState("");
@@ -492,7 +492,7 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 
 	return (
 		<SidebarProvider>
-			<Sidebar variant="inset" collapsible="offcanvas">
+			<Sidebar collapsible="offcanvas">
 				<SidebarHeader>
 					<SidebarMenu>
 						<SidebarMenuItem>
@@ -560,7 +560,7 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 						</SidebarMenu>
 					</SidebarGroup>
 					<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-						<SidebarGroupLabel>Platform</SidebarGroupLabel>
+						<SidebarGroupLabel>Docs</SidebarGroupLabel>
 						<SidebarMenu>
 							{data.navMain.map((item) => (
 								<Collapsible key={item.title} className="group/collapsible">
@@ -1006,7 +1006,7 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 						</div>
 					</div>
 				</header>
-				<div className="flex flex-col gap-4 p-4 mx-auto">{children}</div>
+				<div className="flex flex-col gap-4 p-4">{children}</div>
 				<footer className="w-full py-6 bg-gray-50 border-y rounded-b-xl flex justify-end flex-grow">
 					<div className="container mx-auto px-4">
 						<p className="text-center text-sm text-gray-600">
@@ -1023,7 +1023,7 @@ export default function SidebarPage({ children }: { children: React.ReactNode })
 					</div>
 				</footer>
 			</SidebarInset>
-			<RightSidebar />
+			{!noRightSidebar && <RightSidebar />}
 		</SidebarProvider>
 	);
 }

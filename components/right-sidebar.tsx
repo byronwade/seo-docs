@@ -143,7 +143,7 @@ const data = {
 
 export default function RightSidebar() {
 	return (
-		<Sidebar side="right" className="sticky hidden lg:flex top-0 h-svh" variant="inset" collapsible="none">
+		<Sidebar side="right" className="sticky hidden lg:flex top-0 h-svh border-l border" collapsible="none">
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>Table of Contents</SidebarGroupLabel>
