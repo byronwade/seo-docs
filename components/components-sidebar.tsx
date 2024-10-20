@@ -25,7 +25,7 @@ import {
 	Aperture,
 	Link as LinkIcon,
 	Copy,
-	BookmarkMinus,
+	// BookmarkMinus,
 	Home,
 	Newspaper,
 	ScrollText,
@@ -62,9 +62,12 @@ import {
 	Linkedin,
 	MessageCircle,
 	QrCode,
-	Pocket,
+	// Pocket,
 	Database,
 	Cloud,
+	// BookmarkPlus,
+	Brain,
+	HeartHandshake,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -72,12 +75,28 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/co
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuSubTrigger, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuPortal, DropdownMenuSubContent } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { HeartFilledIcon } from "@radix-ui/react-icons";
 import RightSidebar from "@/components/right-sidebar";
+import { AISummary } from "@/components/ai-summary";
 
 const data = {
 	navMain: [
+		{
+			title: "Welcome",
+			url: "#",
+			icon: HeartHandshake,
+			items: [
+				{
+					title: "Introduction",
+					url: "/docs",
+				},
+				{
+					title: "SEO Basics",
+					url: "#",
+				},
+			],
+		},
 		{
 			title: "On-Page SEO",
 			url: "#",
@@ -450,27 +469,25 @@ const data = {
 			icon: Home,
 		},
 		{
-			name: "Docs",
-			url: "/docs",
-			icon: FileText,
-		},
-		{
 			name: "News",
 			url: "/news",
 			icon: Newspaper,
+			badge: "New",
 		},
 		{
 			name: "Tools",
 			url: "/tools",
 			icon: Wrench,
+			badge: "New",
 		},
 	],
 };
 
-export default function SidebarPage({ children, noRightSidebar }: { children: React.ReactNode; noRightSidebar?: boolean }) {
+export default function SidebarPage({ children, noRightSidebar, isAISummary }: { children: React.ReactNode; noRightSidebar?: boolean; isAISummary?: boolean }) {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [linkCopied, setLinkCopied] = useState(false);
 	const [articleUrl, setArticleUrl] = useState("");
+
 	useEffect(() => {
 		const handleScroll = () => {
 			setIsScrolled(window.scrollY > 0);
@@ -532,29 +549,7 @@ export default function SidebarPage({ children, noRightSidebar }: { children: Re
 											<span>{item.name}</span>
 										</a>
 									</SidebarMenuButton>
-									<DropdownMenu>
-										<DropdownMenuTrigger asChild>
-											<SidebarMenuAction showOnHover>
-												<MoreHorizontal />
-												<span className="sr-only">More</span>
-											</SidebarMenuAction>
-										</DropdownMenuTrigger>
-										<DropdownMenuContent className="w-48" side="bottom" align="end">
-											<DropdownMenuItem>
-												<Folder className="text-muted-foreground mr-2 h-4 w-4" />
-												<span>View Project</span>
-											</DropdownMenuItem>
-											<DropdownMenuItem>
-												<Share className="text-muted-foreground mr-2 h-4 w-4" />
-												<span>Share Project</span>
-											</DropdownMenuItem>
-											<DropdownMenuSeparator />
-											<DropdownMenuItem>
-												<Trash2 className="text-muted-foreground mr-2 h-4 w-4" />
-												<span>Delete Project</span>
-											</DropdownMenuItem>
-										</DropdownMenuContent>
-									</DropdownMenu>
+									{item.badge && <SidebarMenuBadge className="bg-red-500 text-white">{item.badge}</SidebarMenuBadge>}
 								</SidebarMenuItem>
 							))}
 						</SidebarMenu>
@@ -693,9 +688,21 @@ export default function SidebarPage({ children, noRightSidebar }: { children: Re
 					<div className="ml-auto px-3">
 						<div className="flex items-center gap-2 text-sm">
 							<div className="hidden font-medium text-muted-foreground md:inline-block">Edit Oct 08</div>
-							<button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 w-7">
-								<BookmarkMinus className="lucide lucide-bookmark-minus" />
-							</button>
+							{isAISummary && (
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-7 w-7 bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600">
+											<Brain className="lucide lucide-brain" />
+										</button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent className="not-prose hidden xl:block p-2 rounded-lg bg-purple-50 dark:bg-purple-900 border-2 border-purple-400 dark:border-purple-500" align="end" forceMount>
+										<AISummary />
+									</DropdownMenuContent>
+								</DropdownMenu>
+							)}
+							{/* <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 w-7">
+								{isBookmarked ? <BookmarkMinus className="lucide lucide-bookmark-minus" /> : <BookmarkPlus className="lucide lucide-bookmark-plus" />}
+							</button> */}
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 w-7">
@@ -866,14 +873,10 @@ export default function SidebarPage({ children, noRightSidebar }: { children: Re
 													<BookOpen className="mr-2 h-4 w-4" />
 													<span>Add to Reading List</span>
 												</DropdownMenuItem>
-												<DropdownMenuItem>
-													<Bookmark className="mr-2 h-4 w-4" />
-													<span>Bookmark Article</span>
-												</DropdownMenuItem>
-												<DropdownMenuItem>
+												{/* <DropdownMenuItem>
 													<Pocket className="mr-2 h-4 w-4" />
 													<span>Save to Pocket</span>
-												</DropdownMenuItem>
+												</DropdownMenuItem> */}
 												<DropdownMenuItem>
 													<FileText className="mr-2 h-4 w-4" />
 													<span>Save to Instapaper</span>

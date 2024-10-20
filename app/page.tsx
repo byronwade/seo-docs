@@ -12,12 +12,12 @@ export const metadata = {
 
 const HomePage = () => {
 	return (
-		<SidebarPage noRightSidebar>
+		<SidebarPage noRightSidebar isAISummary={false}>
 			<div className="min-h-screen">
 				<main className="container mx-auto px-4 py-16 space-y-24">
 					<section className="text-center space-y-6">
 						<h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Master SEO with Our Comprehensive Docs</h1>
-						<p className="mx-auto max-w-2xl text-xl text-gray-600 dark:text-gray-300">Boost your website's visibility and climb the search rankings with our expert SEO guidance.</p>
+						<p className="mx-auto max-w-2xl text-xl text-gray-600 dark:text-gray-300">Boost your website&apos;s visibility and climb the search rankings with our expert SEO guidance.</p>
 						<div className="max-w-md mx-auto">
 							<form className="flex space-x-2">
 								<Input className="flex-1" placeholder="Search documentation..." type="search" />

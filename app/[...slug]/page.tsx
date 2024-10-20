@@ -8,7 +8,6 @@ import MDXComponents from "@/components/MDXComponents";
 import SidebarPage from "@/components/components-sidebar";
 import { ContentNotFound } from "@/components/content-not-found";
 import { SourcesComponent } from "@/components/sources-component";
-import { AISummary } from "@/components/ai-summary";
 
 const prisma = new PrismaClient();
 
@@ -147,12 +146,11 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		);
 	}
 	return (
-		<SidebarPage>
+		<SidebarPage isAISummary={true}>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
 				<div className="relative max-w-7xl mx-auto">
 					<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8 mb-10">
-						<AISummary />
 						<MDXRemote
 							source={content.content}
 							components={{

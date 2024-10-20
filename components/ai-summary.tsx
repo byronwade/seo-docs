@@ -2,7 +2,7 @@ import { Brain } from "lucide-react";
 
 export function AISummary({ summary = "This is an AI-generated summary of the article. It provides a quick overview of the main points discussed in the content below." }) {
 	return (
-		<div className="not-prose hidden xl:block p-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-purple-400 dark:border-purple-500">
+		<div>
 			<div className="flex items-center mb-4">
 				<Brain className="w-6 h-6 text-purple-600 dark:text-purple-400 mr-2" />
 				<h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">AI Summary</h2>
