@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/admin/Sidebar";
+import AdminSidebar from "@/components/admin/admin-sidebar";
 import { CommandPalette } from "@/components/admin/CommandPalette";
 
 export default function AdminInterface({ children }: { children: React.ReactNode }) {
@@ -19,12 +19,9 @@ export default function AdminInterface({ children }: { children: React.ReactNode
 	}, []);
 
 	return (
-		<div className="flex h-screen bg-background">
-			<Sidebar />
-			<div className="flex flex-col flex-1 overflow-hidden">
-				<main className="flex-1 overflow-auto">{children}</main>
-			</div>
+		<AdminSidebar>
+			{children}
 			<CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setIsCommandPaletteOpen} />
-		</div>
+		</AdminSidebar>
 	);
 }
