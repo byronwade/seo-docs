@@ -12,10 +12,17 @@ import Head from "next/head";
 
 const prisma = new PrismaClient();
 
+// Function to get content and slug
+async function getContentAndSlug(params: { slug: string[] }) {
+	const slug = params.slug;
+	const content = await getContentFromSlug(slug);
+	return { slug, content };
+}
+
 // Function to generate metadata for SEO purposes
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
-	const content = await getContentFromSlug(params.slug);
-	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`;
+	const { slug, content } = await getContentAndSlug(params);
+	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`;
 
 	return {
 		title: content?.seoTitle ?? content?.title ?? "Default Title",
@@ -87,15 +94,6 @@ async function getContentFromSlug(slug: string[]) {
 	});
 
 	if (page) {
-		console.log("Raw page data:", page);
-		console.log("Raw page sources:", page.sources);
-
-		// Remove the JSON.parse line
-		// const parsedSources = page.sources ? JSON.parse(page.sources as string) : null;
-
-		// Instead, use the sources directly
-		console.log("Page sources:", page.sources);
-
 		return {
 			...page,
 			type: "page",
@@ -111,9 +109,7 @@ async function getContentFromSlug(slug: string[]) {
 	});
 
 	if (post) {
-		console.log("Raw post sources:", post.sources);
 		const parsedSources = post.sources ? JSON.parse(post.sources as string) : null;
-		console.log("Parsed post sources:", parsedSources);
 		return {
 			...post,
 			type: "post",
@@ -126,8 +122,8 @@ async function getContentFromSlug(slug: string[]) {
 
 // Full Next.js Page component with metadata, structured data, Error Boundary, and loading skeleton
 export default async function Page({ params }: { params: { slug: string[] } }) {
-	const content = await getContentFromSlug(params.slug);
-	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`;
+	const { slug, content } = await getContentAndSlug(params);
+	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`;
 
 	const jsonLd = {
 		"@context": "https://schema.org",

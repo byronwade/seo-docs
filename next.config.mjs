@@ -8,7 +8,6 @@ const nextConfig = {
 				hostname: "placehold.co",
 			},
 		],
-		domains: ["placehold.co"],
 		dangerouslyAllowSVG: true,
 	},
 	transpilePackages: ['next-mdx-remote'],
