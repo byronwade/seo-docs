@@ -8,46 +8,59 @@ import MDXComponents from "@/components/MDXComponents";
 import SidebarPage from "@/components/components-sidebar";
 import { ContentNotFound } from "@/components/content-not-found";
 import { SourcesComponent } from "@/components/sources-component";
+import Head from "next/head";
 
 const prisma = new PrismaClient();
 
 // Function to generate metadata for SEO purposes
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
 	const content = await getContentFromSlug(params.slug);
+	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`;
 
 	return {
-		title: content?.seoTitle ?? content?.title ?? undefined,
-		description: content?.seoDescription ?? content?.description ?? undefined,
+		title: content?.seoTitle ?? content?.title ?? "Default Title",
+		description: content?.seoDescription ?? content?.description ?? "Default Description",
 		openGraph: {
-			title: content?.seoTitle ?? content?.title ?? undefined,
-			description: content?.seoDescription ?? content?.description ?? undefined,
-			url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+			title: content?.seoTitle ?? content?.title ?? "Default Title",
+			description: content?.seoDescription ?? content?.description ?? "Default Description",
+			url: fullUrl,
 			type: "article",
 			images: [
 				{
 					url: content?.seoImage || content?.image || "/images/default-image.jpg",
 					width: 1200,
 					height: 630,
-					alt: content?.title,
+					alt: content?.title ?? "Default Image Alt",
 				},
 			],
 		},
 		twitter: {
 			card: "summary_large_image",
 			site: "@yourwebsite",
-			title: content?.seoTitle ?? content?.title ?? undefined,
-			description: content?.seoDescription ?? content?.description ?? undefined,
+			title: content?.seoTitle ?? content?.title ?? "Default Title",
+			description: content?.seoDescription ?? content?.description ?? "Default Description",
 			images: [
 				{
 					url: content?.seoImage || content?.image || "/images/default-image.jpg",
-					alt: content?.title,
+					alt: content?.title ?? "Default Image Alt",
 				},
 			],
 		},
-		robots: "index, follow",
-		alternates: {
-			canonical: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+		robots: {
+			index: true,
+			follow: true,
+			googleBot: {
+				index: true,
+				follow: true,
+				"max-video-preview": -1,
+				"max-image-preview": "large",
+				"max-snippet": -1,
+			},
 		},
+		alternates: {
+			canonical: fullUrl,
+		},
+		keywords: content?.keywords ?? "default, keywords",
 	};
 }
 
@@ -114,19 +127,21 @@ async function getContentFromSlug(slug: string[]) {
 // Full Next.js Page component with metadata, structured data, Error Boundary, and loading skeleton
 export default async function Page({ params }: { params: { slug: string[] } }) {
 	const content = await getContentFromSlug(params.slug);
+	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`;
 
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: content?.title ?? "",
-		description: content?.description ?? "",
+		headline: content?.title ?? "Default Title",
+		description: content?.description ?? "Default Description",
 		author: {
 			"@type": "Person",
-			name: content?.author ?? "",
+			name: content?.author ?? "Default Author",
 		},
-		datePublished: content?.date?.toISOString() ?? "",
+		datePublished: content?.date?.toISOString() ?? new Date().toISOString(),
+		dateModified: content?.updatedAt?.toISOString() ?? new Date().toISOString(),
 		image: content?.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/default-image.jpg`,
-		url: `${process.env.NEXT_PUBLIC_DOMAIN}/${params.slug.join("/")}`,
+		url: fullUrl,
 		publisher: {
 			"@type": "Organization",
 			name: "Your Website",
@@ -135,6 +150,11 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 				url: `${process.env.NEXT_PUBLIC_DOMAIN}/images/logo.png`,
 			},
 		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": fullUrl,
+		},
+		keywords: content?.keywords ?? "default, keywords",
 	};
 
 	// If content is not found, return the ContentNotFound component
@@ -145,11 +165,22 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 			</SidebarPage>
 		);
 	}
+
 	return (
 		<SidebarPage isAISummary={true}>
+			<Head>
+				<link rel="canonical" href={fullUrl} />
+				<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+				<meta property="article:published_time" content={content.date?.toISOString() ?? new Date().toISOString()} />
+				<meta property="article:modified_time" content={content.updatedAt?.toISOString() ?? new Date().toISOString()} />
+				<meta property="article:author" content={content.author ?? "Default Author"} />
+				<meta property="article:section" content={content.keywords?.[0] ?? "Default Category"} />
+				{content.keywords && content.keywords.map((keyword: string) => <meta property="article:tag" content={keyword} key={keyword} />)}
+			</Head>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
 				<div className="relative max-w-7xl mx-auto">
+					<h1 className="text-3xl font-bold mb-4">{content.title}</h1>
 					<article className="prose md:prose-lg dark:prose-invert mt-8 space-y-8 mb-10">
 						<MDXRemote
 							source={content.content}

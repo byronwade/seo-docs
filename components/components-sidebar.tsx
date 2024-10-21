@@ -29,7 +29,6 @@ import {
 	Home,
 	Newspaper,
 	ScrollText,
-	Wrench,
 	FileDown,
 	Printer,
 	Share,
