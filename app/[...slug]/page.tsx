@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { BacklinkNewsletterCTA } from "@/components/backlink-newsletter-cta";
 import { Suspense } from "react";
@@ -6,23 +7,25 @@ import { PrismaClient } from "@prisma/client";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import MDXComponents from "@/components/MDXComponents";
 import SidebarPage from "@/components/components-sidebar";
-import { ContentNotFound } from "@/components/content-not-found";
 import { SourcesComponent } from "@/components/sources-component";
-import Head from "next/head";
 
 const prisma = new PrismaClient();
 
-// Function to get content and slug
 async function getContentAndSlug(params: { slug: string[] }) {
 	const slug = params.slug;
 	const content = await getContentFromSlug(slug);
 	return { slug, content };
 }
 
-// Function to generate metadata for SEO purposes
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
 	const { slug, content } = await getContentAndSlug(params);
 	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`;
+
+	if (!content) {
+		return {
+			title: "Content Not Found",
+		};
+	}
 
 	return {
 		title: content?.seoTitle ?? content?.title ?? "Default Title",
@@ -53,21 +56,9 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
 				},
 			],
 		},
-		robots: {
-			index: true,
-			follow: true,
-			googleBot: {
-				index: true,
-				follow: true,
-				"max-video-preview": -1,
-				"max-image-preview": "large",
-				"max-snippet": -1,
-			},
-		},
 		alternates: {
 			canonical: fullUrl,
 		},
-		keywords: content?.keywords ?? "default, keywords",
 	};
 }
 
@@ -120,10 +111,12 @@ async function getContentFromSlug(slug: string[]) {
 	return null;
 }
 
-// Full Next.js Page component with metadata, structured data, Error Boundary, and loading skeleton
 export default async function Page({ params }: { params: { slug: string[] } }) {
 	const { slug, content } = await getContentAndSlug(params);
-	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`;
+
+	if (!content) {
+		notFound();
+	}
 
 	const jsonLd = {
 		"@context": "https://schema.org",
@@ -137,7 +130,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		datePublished: content?.date?.toISOString() ?? new Date().toISOString(),
 		dateModified: content?.updatedAt?.toISOString() ?? new Date().toISOString(),
 		image: content?.image || `${process.env.NEXT_PUBLIC_DOMAIN}/images/default-image.jpg`,
-		url: fullUrl,
+		url: `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`,
 		publisher: {
 			"@type": "Organization",
 			name: "Your Website",
@@ -148,31 +141,13 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 		},
 		mainEntityOfPage: {
 			"@type": "WebPage",
-			"@id": fullUrl,
+			"@id": `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`,
 		},
 		keywords: content?.keywords ?? "default, keywords",
 	};
 
-	// If content is not found, return the ContentNotFound component
-	if (!content) {
-		return (
-			<SidebarPage>
-				<ContentNotFound />
-			</SidebarPage>
-		);
-	}
-
 	return (
 		<SidebarPage isAISummary={true}>
-			<Head>
-				<link rel="canonical" href={fullUrl} />
-				<meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-				<meta property="article:published_time" content={content.date?.toISOString() ?? new Date().toISOString()} />
-				<meta property="article:modified_time" content={content.updatedAt?.toISOString() ?? new Date().toISOString()} />
-				<meta property="article:author" content={content.author ?? "Default Author"} />
-				<meta property="article:section" content={content.keywords?.[0] ?? "Default Category"} />
-				{content.keywords && content.keywords.map((keyword: string) => <meta property="article:tag" content={keyword} key={keyword} />)}
-			</Head>
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			<Suspense fallback={<LoadingSkeleton />}>
 				<div className="relative max-w-7xl mx-auto">
