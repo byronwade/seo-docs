@@ -9,11 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "studio": "prisma studio",
-    "seed": "ts-node prisma/seed.js",
-    "db:generate": "drizzle-kit generate:pg",
-    "db:push": "drizzle-kit push:pg",
-    "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx db/seed.ts"
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+    "db:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.js",
+    "db:migrate": "tsx db/migrate.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
@@ -62,10 +60,12 @@
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "tinymce": "^7.4.1",
-    "vercel": "^37.11.0"
+    "vercel": "^37.11.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@neondatabase/serverless": "^0.10.1",
+    "@paralleldrive/cuid2": "^2.2.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.16.11",
     "@types/pg": "^8.11.10",
@@ -75,6 +75,7 @@
     "drizzle-orm": "^0.35.3",
     "eslint": "^8",
     "eslint-config-next": "^15.0.0",
+    "mongodb": "^6.10.0",
     "pg": "^8.13.1",
     "postcss": "^8",
     "prisma": "^5.20.0",
@@ -85,5 +86,8 @@
   },
   "resolutions": {
     "@mdx-js/react": "2.0.0-next.7"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.js"
   }
 }

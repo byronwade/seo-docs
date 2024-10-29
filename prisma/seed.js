@@ -28,9 +28,10 @@ Here is some [link](https://example.com) and more content.
 			slug: "page",
 		},
 	});
+	console.log("Created/updated ContentType:", contentType);
 
 	// Upsert a page with MDX content (updates if exists, creates if not)
-	await prisma.page.upsert({
+	const page = await prisma.page.upsert({
 		where: { slug: "my-first-mdx-page" }, // Ensure slug is unique
 		update: {
 			title: "My First MDX Page - Updated",
@@ -57,6 +58,7 @@ Here is some [link](https://example.com) and more content.
 			contentTypeId: contentType.id,
 		},
 	});
+	console.log("Created/updated Page:", page);
 
 	console.log("Seed data has been inserted or updated!");
 }

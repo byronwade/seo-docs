@@ -2,23 +2,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource postgresql {
+//   provider = "postgresql"
+//   url      = env("POSTGRES_URL")
+// }
+
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "mongodb"
+  url      = env("MONGODB_URL")
 }
 
-
 model ContentType {
-  id    BigInt @id @default(autoincrement()) // Auto-increment strategy for bigint
-  name  String @unique
-  slug  String @unique
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String  @unique
+  slug  String  @unique
   pages Page[]
   posts Post[]
+
+  @@map("contentTypes")
 }
 
 model Page {
-  id              BigInt      @id @default(autoincrement()) // Auto-increment strategy for bigint
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   content         String
   slug            String?     @unique
@@ -32,13 +37,15 @@ model Page {
   seoImage        String?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
-  contentTypeId   BigInt
   contentType     ContentType @relation(fields: [contentTypeId], references: [id])
+  contentTypeId   String      @db.ObjectId
   sources         Json?
+
+  @@map("pages")
 }
 
 model Post {
-  id              BigInt      @id @default(autoincrement()) // Auto-increment strategy for bigint
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   content         String
   slug            String?     @unique
@@ -52,7 +59,9 @@ model Post {
   seoImage        String?
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
-  contentTypeId   BigInt
   contentType     ContentType @relation(fields: [contentTypeId], references: [id])
+  contentTypeId   String      @db.ObjectId
   sources         Json?
+
+  @@map("posts")
 }
