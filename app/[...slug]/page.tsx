@@ -11,7 +11,8 @@ import { SourcesComponent } from "@/components/sources-component";
 
 const prisma = new PrismaClient();
 
-export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+	const params = await props.params;
 	const slug = params.slug;
 	const content = await getContentFromSlug(slug);
 	const fullUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/${slug.join("/")}`;
@@ -106,7 +107,8 @@ async function getContentFromSlug(slug: string[]) {
 	return null;
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+	const params = await props.params;
 	const slug = params.slug;
 	const content = await getContentFromSlug(slug);
 
