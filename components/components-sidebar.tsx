@@ -513,7 +513,7 @@ export default function SidebarPage({ children, noRightSidebar, isAISummary }: {
 					<SidebarMenu>
 						<SidebarMenuItem>
 							<SidebarMenuButton size="lg" asChild>
-								<Link href="/">
+								<Link prefetch={true} href="/">
 									<Image src="/seo-icon.svg" alt="Logo" width={32} height={32} className="size-12" />
 									<div className="grid flex-1 text-left text-sm leading-tight">
 										<span className="truncate font-semibold">SEO Docs</span>
@@ -525,7 +525,7 @@ export default function SidebarPage({ children, noRightSidebar, isAISummary }: {
 
 						{/* <SidebarMenuItem>
 							<SidebarMenuButton className="bg-gradient-to-r from-blue-500 to-purple-500 text-white" size="sm" asChild>
-								<Link href="/">
+								<Link prefetch={true} href="/">
 									<Star className="mr-2 h-4 w-4" />
 									<div className="grid flex-1 text-left text-sm leading-tight">
 										<span className="truncate text-xs">Upgrade to Pro</span>
@@ -571,7 +571,7 @@ export default function SidebarPage({ children, noRightSidebar, isAISummary }: {
 												{item.items?.map((subItem) => (
 													<SidebarMenuSubItem key={subItem.title}>
 														<SidebarMenuSubButton asChild>
-															<Link href={subItem.url}>
+															<Link prefetch={true} href={subItem.url}>
 																<span>{subItem.title}</span>
 															</Link>
 														</SidebarMenuSubButton>
@@ -1013,11 +1013,11 @@ export default function SidebarPage({ children, noRightSidebar, isAISummary }: {
 					<div className="container mx-auto px-4">
 						<p className="text-center text-sm text-gray-600">
 							Made with{" "}
-							<Link href="https://nextjs.org" className="font-medium hover:underline" target="_blank" rel="noopener noreferrer">
+							<Link prefetch={true} href="https://nextjs.org" className="font-medium hover:underline" target="_blank" rel="noopener noreferrer">
 								Next.js
 							</Link>{" "}
 							and{" "}
-							<Link href="https://ui.shadcn.com" className="font-medium hover:underline" target="_blank" rel="noopener noreferrer">
+							<Link prefetch={true} href="https://ui.shadcn.com" className="font-medium hover:underline" target="_blank" rel="noopener noreferrer">
 								Shadcn
 							</Link>{" "}
 							by Byron Wade

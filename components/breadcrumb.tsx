@@ -24,24 +24,24 @@ export function Breadcrumb() {
   ]
 
   return (
-    <nav
-      aria-label="Breadcrumb"
-      className={cn("mb-4 flex items-center space-x-1 text-sm text-muted-foreground", {
-        'invisible': pathname === '/',
-      })}
-    >
-      {breadcrumbItems.map((item, index) => (
-        <React.Fragment key={index}>
-          {index > 0 && <ChevronRight className="h-4 w-4" />}
-          {index === breadcrumbItems.length - 1 ? (
-            <span className="font-medium text-foreground">{item?.title}</span>
-          ) : (
-            <Link href={item?.href ?? '#'} className="hover:text-foreground">
-              {item?.title}
-            </Link>
-          )}
-        </React.Fragment>
-      ))}
-    </nav>
-  )
+		<nav
+			aria-label="Breadcrumb"
+			className={cn("mb-4 flex items-center space-x-1 text-sm text-muted-foreground", {
+				invisible: pathname === "/",
+			})}
+		>
+			{breadcrumbItems.map((item, index) => (
+				<React.Fragment key={index}>
+					{index > 0 && <ChevronRight className="h-4 w-4" />}
+					{index === breadcrumbItems.length - 1 ? (
+						<span className="font-medium text-foreground">{item?.title}</span>
+					) : (
+						<Link prefetch={true} href={item?.href ?? "#"} className="hover:text-foreground">
+							{item?.title}
+						</Link>
+					)}
+				</React.Fragment>
+			))}
+		</nav>
+  );
 }

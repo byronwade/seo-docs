@@ -79,13 +79,13 @@ export function BlogPostComponent() {
 					<nav className="text-sm mb-6" aria-label="Breadcrumb">
 						<ol className="flex items-center space-x-2 overflow-x-auto whitespace-nowrap scrollbar-hide touch-pan-x py-2">
 							<li className="flex items-center">
-								<Link href="/" className="text-primary hover:text-primary-hover transition-colors">
+								<Link prefetch={true} href="/" className="text-primary hover:text-primary-hover transition-colors">
 									Home
 								</Link>
 							</li>
 							<li className="flex items-center">
 								<ChevronRight className="w-4 h-4 text-muted-foreground mx-1" />
-								<Link href="/blog" className="text-primary hover:text-primary-hover transition-colors">
+								<Link prefetch={true} href="/blog" className="text-primary hover:text-primary-hover transition-colors">
 									Blog
 								</Link>
 							</li>
@@ -228,7 +228,7 @@ export function BlogPostComponent() {
 										</div>
 										<CardContent className="p-4">
 											<h3 className="font-semibold text-lg mb-2 line-clamp-2">
-												<Link href={`/blog/${relatedPost.slug}`} className="text-primary hover:underline">
+												<Link prefetch={true} href={`/blog/${relatedPost.slug}`} className="text-primary hover:underline">
 													{relatedPost.title}
 												</Link>
 											</h3>
@@ -240,7 +240,7 @@ export function BlogPostComponent() {
 										</CardContent>
 										<CardFooter className="p-4 pt-0">
 											<Button variant="link" className="p-0 h-auto font-semibold" asChild>
-												<Link href={`/blog/${relatedPost.slug}`}>
+												<Link prefetch={true} href={`/blog/${relatedPost.slug}`}>
 													Read More <ArrowRight className="ml-2 h-4 w-4" />
 												</Link>
 											</Button>

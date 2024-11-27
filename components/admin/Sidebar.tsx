@@ -89,7 +89,7 @@ export function Sidebar({ isSidebarCollapsed = false, activeSection = "" }) {
 					<DropdownMenuContent side="right" className="w-48">
 						{item.children.map((child) => (
 							<DropdownMenuItem key={child.id} asChild>
-								<Link href={`/admin/${child.value}`} className={`flex items-center w-full ${activeSection === child.value ? "bg-accent" : ""}`}>
+								<Link prefetch={true} href={`/admin/${child.value}`} className={`flex items-center w-full ${activeSection === child.value ? "bg-accent" : ""}`}>
 									{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 									{/* @ts-expect-error */}
 									<child.icon className="h-4 w-4 mr-2" />
@@ -102,7 +102,7 @@ export function Sidebar({ isSidebarCollapsed = false, activeSection = "" }) {
 			) : (
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<Link href={`/admin/${item.value}`} passHref>
+						<Link prefetch={true} href={`/admin/${item.value}`} passHref>
 							<Button variant={activeSection === item.value ? "secondary" : "ghost"} className={`w-full justify-start ${isSidebarCollapsed ? "px-2" : "px-3"} ${activeSection === item.value ? "bg-accent" : ""}`}>
 								{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 								{/* @ts-expect-error */}

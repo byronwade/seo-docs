@@ -19,7 +19,7 @@ export function ContentNotFound() {
 				<p className="text-center text-muted-foreground mb-8">Oops! The content you&apos;re looking for seems to have wandered off. Let&apos;s get you back on track.</p>
 				<div className="flex justify-center">
 					<Button asChild>
-						<Link href="/" className="flex items-center">
+						<Link prefetch={true} href="/" className="flex items-center">
 							<Home className="mr-2 h-4 w-4" />
 							Return Home
 						</Link>
